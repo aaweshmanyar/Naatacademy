@@ -31,33 +31,42 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeShareButtons();
 });
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const kalaamId = urlParams.get('id');
+  const kalaamId = urlParams.get("id");
 
   if (kalaamId) {
     try {
-      const response = await fetch(`https://updated-naatacademy.onrender.com/api/kalaam/${kalaamId}`);
+      const response = await fetch(
+        `https://updated-naatacademy.onrender.com/api/kalaam/${kalaamId}`
+      );
       const kalaam = await response.json();
       document.title = `${kalaam.Title} | Naat Academy`;
 
-      const descriptionMeta = document.querySelector('meta[name="description"]');
+      const descriptionMeta = document.querySelector(
+        'meta[name="description"]'
+      );
       if (descriptionMeta) {
-        descriptionMeta.setAttribute('content', kalaam.ContentUrdu.split('\n')[0].trim());
+        descriptionMeta.setAttribute(
+          "content",
+          kalaam.ContentUrdu.split("\n")[0].trim()
+        );
       }
 
       const ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) ogTitle.setAttribute('content', kalaam.Title);
+      if (ogTitle) ogTitle.setAttribute("content", kalaam.Title);
 
       const ogDesc = document.querySelector('meta[property="og:description"]');
-      if (ogDesc) ogDesc.setAttribute('content', kalaam.ContentUrdu.split('\n')[0].trim());
-
+      if (ogDesc)
+        ogDesc.setAttribute(
+          "content",
+          kalaam.ContentUrdu.split("\n")[0].trim()
+        );
     } catch (error) {
-      console.error('Error fetching kalaam:', error);
+      console.error("Error fetching kalaam:", error);
     }
   }
 });
-
 
 async function loadKalaamDetail(kalaamId) {
   try {
@@ -71,7 +80,9 @@ async function loadKalaamDetail(kalaamId) {
     `;
 
     // Fetch kalaam details
-    const response = await fetch(`https://updated-naatacademy.onrender.com/api/kalaam/${kalaamId}`);
+    const response = await fetch(
+      `https://updated-naatacademy.onrender.com/api/kalaam/${kalaamId}`
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -83,20 +94,39 @@ async function loadKalaamDetail(kalaamId) {
     document.getElementById("breadcrumbKalamTitle").textContent = kalaam.Title;
 
     // Update meta information
-    document.querySelector(".meta-info-item .meta-value.urdu-text").textContent = kalaam.WriterName || "نامعلوم";
-    document.querySelector(".bahr-value").textContent = kalaam.Bahr || "نامعلوم";
+    document.querySelector(
+      ".meta-info-item .meta-value.urdu-text"
+    ).textContent = kalaam.WriterName || "نامعلوم";
     document.querySelector(".meta-count").textContent = kalaam.ViewCount || "0";
+    document.getElementById("bahrName").textContent = kalaam.Bahr
+      ? `بحر: ${kalaam.Bahr}`
+      : "بحر: نامعلوم";
+    document.getElementById("bahrArkaan").textContent = kalaam.Arkaan
+      ? `ارکان: ${kalaam.Arkaan}`
+      : "ارکان: نامعلوم";
 
     // Process lines
-    const urduLines = (kalaam.ContentUrdu || "").split("\n").filter(line => line.trim() !== "");
-    const romanLines = (kalaam.ContentRomanUrdu || "").split("\n").filter(line => line.trim() !== "");
-    const englishLines = (kalaam.ContentEnglish || "").split("\n").filter(line => line.trim() !== "");
+    const urduLines = (kalaam.ContentUrdu || "")
+      .split("\n")
+      .filter((line) => line.trim() !== "");
+    const romanLines = (kalaam.ContentRomanUrdu || "")
+      .split("\n")
+      .filter((line) => line.trim() !== "");
+    const englishLines = (kalaam.ContentEnglish || "")
+      .split("\n")
+      .filter((line) => line.trim() !== "");
 
     // Ensure all arrays are even and aligned
-    const maxLength = Math.max(urduLines.length, romanLines.length, englishLines.length);
-    while (urduLines.length < maxLength) urduLines.push('');
-    while (romanLines.length < maxLength) romanLines.push('Data dastiyab nahi hai');
-    while (englishLines.length < maxLength) englishLines.push('Translation not available');
+    const maxLength = Math.max(
+      urduLines.length,
+      romanLines.length,
+      englishLines.length
+    );
+    while (urduLines.length < maxLength) urduLines.push("");
+    while (romanLines.length < maxLength)
+      romanLines.push("Data dastiyab nahi hai");
+    while (englishLines.length < maxLength)
+      englishLines.push("Translation not available");
 
     let coupletsHTML = "";
 
@@ -115,12 +145,16 @@ async function loadKalaamDetail(kalaamId) {
           <div class="translation-content">
             <div class="copy-box box-roman">
               <h4 class="roman-text">Roman Urdu</h4>
-              <p class="roman-text">${romanLine1}${romanLine2 ? '<br>' + romanLine2 : ''}</p>
+              <p class="roman-text">${romanLine1}${
+        romanLine2 ? "<br>" + romanLine2 : ""
+      }</p>
               <span class="copy-feedback">Copied!</span>
             </div>
             <div class="copy-box box-meaning">
               <h4 class="urdu-text">English Translation</h4>
-              <p class="urdu-text">${englishLine1}${englishLine2 ? '<br>' + englishLine2 : ''}</p>
+              <p class="urdu-text">${englishLine1}${
+        englishLine2 ? "<br>" + englishLine2 : ""
+      }</p>
               <span class="copy-feedback">کاپی ہوگیا!</span>
             </div>
           </div>
@@ -135,7 +169,6 @@ async function loadKalaamDetail(kalaamId) {
     initializeLanguageToggle();
     initializeCoupletToggles();
     initializeCopyButtons();
-
   } catch (error) {
     console.error("Error loading kalaam details:", error);
     const container = document.getElementById("poetryTextContainer");
@@ -151,7 +184,6 @@ async function loadKalaamDetail(kalaamId) {
     `;
   }
 }
-
 
 // Rest of the JavaScript functions remain the same...
 function initializeLanguageToggle() {
@@ -223,6 +255,8 @@ function initializeModals() {
   const bahrModal = document.getElementById("bahrDetailModal");
   const bahrTrigger = document.getElementById("bahrBoxTrigger");
   const closeBahrModal = document.getElementById("closeBahrModal");
+  document.getElementById("modalBahrTitle").textContent = kalaam.Bahr || "نامعلوم";
+document.getElementById("modalBahrArkaan").textContent = kalaam.Arkaan || "نامعلوم";
 
   if (bahrModal && bahrTrigger && closeBahrModal) {
     bahrTrigger.addEventListener(
@@ -276,7 +310,7 @@ function initializeShareButtons() {
 
   // Add specific WhatsApp sharing functionality
   if (whatsappButton) {
-    whatsappButton.addEventListener("click", function(e) {
+    whatsappButton.addEventListener("click", function (e) {
       e.preventDefault();
       shareOnWhatsApp();
     });
@@ -302,17 +336,19 @@ function shareOnWhatsApp() {
   const kalaamTitle = document.getElementById("kalamTitle").textContent.trim();
   const urlParams = new URLSearchParams(window.location.search);
   const kalaamId = urlParams.get("id");
-  
+
   // Create share URL with both ID and title
-  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics.html?id=${kalaamId}&kalam=${encodeURIComponent(kalaamTitle)}`;
-  
+  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics.html?id=${kalaamId}&kalam=${encodeURIComponent(
+    kalaamTitle
+  )}`;
+
   // Create WhatsApp share link
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
     `یہ خوبصورت کلام پڑھیں: ${kalaamTitle}\n${shareUrl}`
   )}`;
-  
+
   // Open in new tab
-  window.open(whatsappUrl, '_blank');
+  window.open(whatsappUrl, "_blank");
 }
 
 // Updated shareKalaam function (general sharing)
@@ -320,26 +356,28 @@ function shareKalaam() {
   const kalaamTitle = document.getElementById("kalamTitle").textContent.trim();
   const urlParams = new URLSearchParams(window.location.search);
   const kalaamId = urlParams.get("id");
-  
+
   // Create share URL with both ID and title
-  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics.html?id=${kalaamId}&kalam=${(kalaamTitle)}`;
+  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics.html?id=${kalaamId}&kalam=${kalaamTitle}`;
 
   if (navigator.share) {
     // Web Share API (for mobile devices)
-    navigator.share({
-      title: `${kalaamTitle} | Naat Academy`,
-      text: `یہ خوبصورت کلام پڑھیں: ${kalaamTitle}`,
-      url: shareUrl,
-    }).catch(error => console.log('Error sharing:', error));
+    navigator
+      .share({
+        title: `${kalaamTitle} | Naat Academy`,
+        text: `یہ خوبصورت کلام پڑھیں: ${kalaamTitle}`,
+        url: shareUrl,
+      })
+      .catch((error) => console.log("Error sharing:", error));
   } else {
     // Fallback for desktop and browsers without Web Share API
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
       `یہ خوبصورت کلام پڑھیں: ${kalaamTitle}\n${shareUrl}`
     )}`;
-    
+
     // Create a share menu
-    const shareMenu = document.createElement('div');
-    shareMenu.className = 'share-menu';
+    const shareMenu = document.createElement("div");
+    shareMenu.className = "share-menu";
     shareMenu.innerHTML = `
       <div class="share-menu-content">
         <h4 class="urdu-text">شیئر کریں</h4>
@@ -355,7 +393,7 @@ function shareKalaam() {
         </div>
       </div>
     `;
-    
+
     // Style the share menu
     shareMenu.style.cssText = `
       position: fixed;
@@ -369,30 +407,30 @@ function shareKalaam() {
       align-items: center;
       z-index: 1000;
     `;
-    
-    shareMenu.querySelector('.share-menu-content').style.cssText = `
+
+    shareMenu.querySelector(".share-menu-content").style.cssText = `
       background: white;
       padding: 1.5rem;
       border-radius: 1rem;
       max-width: 300px;
       width: 90%;
     `;
-    
+
     // Add copy functionality
-    shareMenu.querySelector('.copy-link').addEventListener('click', () => {
+    shareMenu.querySelector(".copy-link").addEventListener("click", () => {
       navigator.clipboard.writeText(shareUrl).then(() => {
-        alert('لنک کاپی ہو گیا ہے!');
+        alert("لنک کاپی ہو گیا ہے!");
         document.body.removeChild(shareMenu);
       });
     });
-    
+
     // Close on click outside
-    shareMenu.addEventListener('click', (e) => {
+    shareMenu.addEventListener("click", (e) => {
       if (e.target === shareMenu) {
         document.body.removeChild(shareMenu);
       }
     });
-    
+
     document.body.appendChild(shareMenu);
   }
 }
