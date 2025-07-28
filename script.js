@@ -709,6 +709,7 @@ async function fetchmuntakhibKalaam() {
       const kalaamId = item.KalaamID || item._id || "";
       const category =
         item.CategoryName || item.categoryName || item.SectionName || "کلام";
+      const Bookname = item.Bookname
       const poet = item.WriterName || item.writerName || "نامعلوم";
 
       const kalaamHTML = `
@@ -732,7 +733,7 @@ async function fetchmuntakhibKalaam() {
           </div>
           <div class="mt-4 flex justify-start items-center">
               <span class="category-tag urdu-text-xs selected-kalaam-category-tag">
-                ${category}
+                ${Bookname}
               </span>
           </div>
         </article>`;

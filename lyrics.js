@@ -88,6 +88,14 @@ async function loadKalaamDetail(kalaamId) {
     }
     const kalaam = await response.json();
 
+    // ------ Fill modal DATA for dynamic Bahr modal --------
+    window.currentBahrInfo = {
+      title: kalaam.Bahr || "نامعلوم",
+      Arkaan: kalaam.Arkaan || "نامعلوم", // Use 'Arkaan' (not 'arkaan') to match your initializeModals usage
+      description: `اس بحر کے بارے میں تفصیل دستیاب نہیں۔`, // You can update this if your API has description
+      count: undefined, // Or provide if API has Bahr summary/count
+    };
+
     // Update the page title and headers
     document.title = `${kalaam.Title} | Naat Academy`;
     document.getElementById("kalamTitle").textContent = kalaam.Title;
@@ -104,6 +112,13 @@ async function loadKalaamDetail(kalaamId) {
     document.getElementById("bahrArkaan").textContent = kalaam.Arkaan
       ? `ارکان: ${kalaam.Arkaan}`
       : "ارکان: نامعلوم";
+
+    document
+      .getElementById("bahrBoxTrigger")
+      .setAttribute("data-bahr", kalaam.Bahr || "نامعلوم");
+    document
+      .getElementById("bahrBoxTrigger")
+      .setAttribute("data-arkaan", kalaam.Arkaan || "نامعلوم");
 
     // Process lines
     const urduLines = (kalaam.ContentUrdu || "")
@@ -232,37 +247,29 @@ function initializeLanguageToggle() {
 }
 
 function initializeModals() {
-  // Author modal
-  const authorModal = document.getElementById("authorDetailModal");
-  const authorTrigger = document.getElementById("authorBoxTrigger");
-  const closeAuthorModal = document.getElementById("closeAuthorModal");
-
-  if (authorModal && authorTrigger && closeAuthorModal) {
-    authorTrigger.addEventListener(
-      "click",
-      () => (authorModal.style.display = "block")
-    );
-    closeAuthorModal.addEventListener(
-      "click",
-      () => (authorModal.style.display = "none")
-    );
-    window.addEventListener("click", (e) => {
-      if (e.target === authorModal) authorModal.style.display = "none";
-    });
-  }
-
   // Bahr modal
   const bahrModal = document.getElementById("bahrDetailModal");
   const bahrTrigger = document.getElementById("bahrBoxTrigger");
   const closeBahrModal = document.getElementById("closeBahrModal");
-  document.getElementById("modalBahrTitle").textContent = kalaam.Bahr || "نامعلوم";
-document.getElementById("modalBahrArkaan").textContent = kalaam.Arkaan || "نامعلوم";
 
   if (bahrModal && bahrTrigger && closeBahrModal) {
-    bahrTrigger.addEventListener(
-      "click",
-      () => (bahrModal.style.display = "block")
-    );
+    bahrTrigger.addEventListener("click", () => {
+      // Fill modal content before showing
+      if (window.currentBahrInfo) {
+        document.getElementById("modalBahrTitle").textContent =
+          window.currentBahrInfo.title;
+        document.getElementById("modalBahrArkaan").textContent =
+          window.currentBahrInfo.Arkaan;
+        if (window.currentBahrInfo.description)
+          document.getElementById("modalBahrDescription").textContent =
+            window.currentBahrInfo.description;
+        if (window.currentBahrInfo.count)
+          document.getElementById(
+            "modalBahrCount"
+          ).innerHTML = `اس بحر میں کل <span class="font-bold text-blue-600">${window.currentBahrInfo.count}</span> کلام موجود ہیں۔`;
+      }
+      bahrModal.style.display = "block";
+    });
     closeBahrModal.addEventListener(
       "click",
       () => (bahrModal.style.display = "none")

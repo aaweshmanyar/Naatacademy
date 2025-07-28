@@ -218,7 +218,7 @@
 
                 bookGrid.innerHTML += `
                     <article class="card p-4 book-item flex flex-col" ${categoryDataAttr}>
-                        <a href="/books/${slug}" class="book-card-image-link">
+                        <a href="./Bookwriter.html?id=${book.BookID}" class="book-card-image-link">
                             <img src="${imageUrl}" alt="${title}" 
                                 class="book-card-image mb-4 shadow-md"
                                 onerror="this.onerror=null;this.src='https://placehold.co/400x600/8e44ad/ffffff?text=${encodeURIComponent(title)}';">
