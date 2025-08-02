@@ -61,7 +61,7 @@ async function RelatedArticle() {
       const shareURL = `https://naatacademy.com/article.html?id=${article.ArticleID}`;
 
       const card = document.createElement("a");
-      card.href = `./Pages/article.html?id=${article.ArticleID}`;
+      card.href = `./article.html?id=${article.ArticleID}`;
       card.className = "card block";
 
       card.innerHTML = `

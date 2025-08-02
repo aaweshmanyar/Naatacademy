@@ -105,66 +105,56 @@
         <div class="container mx-auto px-4 flex justify-between items-center">
             <a href="/" aria-label="Naat Academy Home"><img src="https://res.cloudinary.com/awescreative/image/upload/v1749154768/Awes/new_logo_naat_academy_image.png" alt="Naat Academy Logo" class="h-16 md:h-20"></a>
             <nav class="flex items-center space-x-4 space-x-reverse">
-                <a href="#" class="text-gray-700 hover:text-teal-600 urdu-text urdu-text-sm font-medium">صفحہ اول</a>
-                <a href="#" class="text-gray-700 hover:text-teal-600 urdu-text urdu-text-sm font-medium">کلام</a>
-                <a href="#" class="text-gray-700 hover:text-teal-600 urdu-text urdu-text-sm font-medium">شعراء</a>
+                <a href="#" class="text-gray-700 hover:text-teal-600 urdu-text urdu-text-sm font-medium">سرورق</a>
+                <a href="./books.html" class="text-gray-700 hover:text-teal-600 urdu-text urdu-text-sm font-medium">کتابیں</a>
+                <a href="../bazmedurood.html" class="text-gray-700 hover:text-teal-600 urdu-text urdu-text-sm font-medium">درود شریف</a>
             </nav>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <div class="lg:col-span-2">
-                <div class="card overflow-hidden">
-                    <div class="writer-details-section" id="poet-detail">
-                        <div>
-                            <!-- 2. UPDATE WRITER'S AVATAR HERE -->
-                            <div class="writer-avatar-wrapper mx-auto">
-                                <img src="https://naatacademy.com/media/poets/ahmed-raza-khan.png" alt="امام احمد رضا خان">
-                            </div>
-                            <div class="writer-info-text mt-4">
-                                <!-- 2. UPDATE WRITER'S NAME & TITLE HERE -->
-                                <h1 class="urdu-text urdu-text-md">امام احمد رضا خان <span class="urdu-text-sm"></span></h1>
-                                <p class="urdu-text urdu-text-sm text-gray-500">مجموعہ: حدائق بخشش</p>
-                            </div>
+   <main class="flex justify-center py-8 px-4 bg-slate-50">
+    <div class="max-w-[1100px]  mx-auto px-4">
+        <div class="lg:col-span-2">
+            <div class="card overflow-hidden">
+                <div class="writer-details-section" id="poet-detail">
+                    <div>
+                        <!-- 2. UPDATE WRITER'S AVATAR HERE -->
+                        <div class="writer-avatar-wrapper mx-auto">
+                            <img src="https://naatacademy.com/media/poets/ahmed-raza-khan.png" alt="امام احمد رضا خان">
+                        </div>
+                        <div class="writer-info-text mt-4 text-center">
+                            <!-- 2. UPDATE WRITER'S NAME & TITLE HERE -->
+                            <h1 class="urdu-text urdu-text-md">امام احمد رضا خان <span class="urdu-text-sm"></span></h1>
+                            <p class="urdu-text urdu-text-sm text-gray-500">مجموعہ: حدائق بخشش</p>
+                        </div>
+                        <div class="flex justify-center mt-4">
                             <button id="viewProfileBtn" class="follow-button urdu-text urdu-text-sm">پروفائل دیکھیں</button>
                         </div>
                     </div>
-                    
-                    <div class="sticky-filters" id="stickyFilters">
-                        <div class="container mx-auto">
-                            <div class="flex justify-center flex-wrap gap-3 mb-6" id="filterTabs">
-                                <!-- <button class="filter-tab urdu-text urdu-text-sm" data-filter="tahajji">حروفِ تہجی</button> -->
-                                <button class="filter-tab active urdu-text urdu-text-sm" data-filter="radif" onclick=location.reload()>حروفِ ردیف</button>
-                                <!-- <button class="filter-tab urdu-text urdu-text-sm" data-filter="favorite">پسندیدہ</button> -->
-                            </div>
-                            <div class="flex justify-center flex-wrap gap-2" id="alphabetNavContainer"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="px-4 md:px-6 py-4" id="poetryList"></div>
                 </div>
-            </div>
 
-            <aside class="lg:col-span-1">
-                <div class="sticky top-28 space-y-8">
-                    <div class="sidebar-section">
-                        <h2 class="sidebar-title urdu-text urdu-text-md text-slate-800">کتاب کا خلاصہ</h2>
-                        <div class="chip-container" id="summary-list"></div>
-                    </div>
-                    <div class="sidebar-section">
-                        <h2 class="sidebar-title urdu-text urdu-text-md text-slate-800">موضوعات</h2>
-                        <div class="chip-container" id="topics-list"></div>
-                    </div>
-                    <div class="sidebar-section">
-                        <h2 class="sidebar-title urdu-text urdu-text-md text-slate-800">نعت اکیڈمی فرہنگ</h2>
-                        <div class="chip-container" id="glossary-list"></div>
+                <!-- Sticky filters and poetry list remain unchanged here -->
+                <div class="sticky-filters" id="stickyFilters">
+                    <div class="container mx-auto">
+                        <div class="flex justify-center flex-wrap gap-3 mb-6" id="filterTabs">
+                            <button class="filter-tab active urdu-text urdu-text-sm" data-filter="radif" onclick="location.reload()">حروفِ ردیف</button>
+                        </div>
+                        <div class="flex justify-center flex-wrap gap-2" id="alphabetNavContainer"></div>
                     </div>
                 </div>
-            </aside>
+
+                <div class="px-4 md:px-6 py-4" id="poetryList"></div>
+            </div>
         </div>
-    </main>
+        <!-- Side area commented out as in original -->
+        <!--
+        <aside class="lg:col-span-1">
+            ...
+        </aside>
+        -->
+    </div>
+</main>
+
 
     <footer class="footer-bg py-8 text-center shadow-inner mt-12">
         <div class="container mx-auto px-4">

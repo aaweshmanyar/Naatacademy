@@ -1,0 +1,195 @@
+/* Custom Font for Urdu Text */
+@font-face {
+    font-family: 'NaatFont';
+    src: url('https://res.cloudinary.com/awescreative/raw/upload/v1749150996/Awes/naatfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Custom Font for Quranic Text */
+@font-face {
+    font-family: 'MohammadiQuranicFont';
+    src: url('https://font.alquran.cloud/Mohammadi-Quranic-font.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Base Body Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+/* Urdu Text Specific Styles */
+.urdu-text {
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    line-height: 2.0; /* Compact line-height */
+    font-size: 1.1rem;
+}
+
+.quran-text {
+    font-family: 'MohammadiQuranicFont', 'NaatFont', serif;
+    font-size: 1.3rem;
+    line-height: 2.2;
+    color: #006400; /* Dark Green for Quranic text */
+}
+
+.poetry-block {
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .poetry-block {
+        padding-left: 8rem;
+        padding-right: 8rem;
+    }
+}
+
+.poetry-block p {
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    font-size: 1.2rem;
+    line-height: 2.2;
+    color: #003366; /* Dark Blue */
+}
+
+.title-green {
+    color: #16a34a; /* Tailwind green-600 */
+}
+
+/* Header Gradient Background */
+.header-gradient {
+    background: linear-gradient(to bottom, #d2f4f2, #ffffff);
+}
+
+/* Card Styles */
+.card {
+    background-color: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08), 0 3px 6px -3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    padding: 1.5rem; /* Compact padding */
+    border: 1px solid #e2e8f0;
+}
+
+/* Section Title Styles */
+.section-title {
+    font-weight: 700;
+    color: #2a415a;
+    font-size: 1.75rem; /* Compact font size */
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.section-title-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem; /* Compact size */
+    height: 2.8rem;
+    border-radius: 50%;
+    margin-left: 0.8rem; /* Changed to margin-left for RTL */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-title-icon {
+    font-size: 1.4rem; /* Compact size */
+    color: white;
+}
+
+.gradient-icon-bg-durood { 
+    background-image: linear-gradient(45deg, #f97316, #fb923c); /* Orange */
+}
+
+/* Form Input Styles */
+.form-input {
+    width: 100%;
+    padding: 0.65rem 1rem; /* Compact padding */
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+}
+
+.form-input.urdu-text-input {
+     font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+     font-size: 1.1rem;
+     text-align: right;
+}
+
+.form-input.ltr-input {
+    text-align: left;
+    direction: ltr;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #10b981; /* Emerald focus */
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* Button Styles */
+.submit-button {
+    background-image: linear-gradient(to right, #10b981, #059669);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+}
+
+.whatsapp-follow-button {
+    background-color: #25D366; /* WhatsApp Green */
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.whatsapp-follow-button:hover {
+    background-color: #1DAE52;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+}
+
+/* Success Message Style */
+#successMessage {
+    display: none; /* Hidden by default */
+    background-color: #e0f2f1;
+    color: #00796b;
+    border: 2px solid #00796b;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
