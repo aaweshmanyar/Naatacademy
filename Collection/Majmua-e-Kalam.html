@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>کلام کی فہرست - نعت اکیڈمی</title>
+    <meta name="description"
+        content="نعت اکیڈمی میں اسلامی شاعری، حمد، نعت، منقبت، اور سلام کی مکمل فہرست دریافت کریں۔" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+  <link rel="stylesheet" href="majmuaekalam.css">
+</head>
+
+<body class="bg-gray-100">
+    <!-- Header Section -->
+    <header class="header-gradient py-1 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center gap-6 py-1 border-b border-gray-200">
+                <a href="#"
+                    class="text-gray-700 hover:text-teal-600 text-sm urdu-text urdu-text-sm font-medium transition-colors">سرورق</a>
+                <a href="../Books/books.html"
+                    class="text-gray-700 hover:text-teal-600 text-sm urdu-text urdu-text-sm font-medium transition-colors">کتابیں</a>
+                <a href="../bazmedurood.html"
+                    class="text-gray-700 hover:text-teal-600 text-sm urdu-text urdu-text-sm font-medium transition-colors">درود
+                    شریف</a>
+            </div>
+            <div class="text-center my-2">
+                <a href="/" aria-label="Naat Academy Home">
+                    <img src="https://res.cloudinary.com/awescreative/image/upload/v1749154768/Awes/new_logo_naat_academy_image.png"
+                        alt="نعت اکیڈمی لوگو" class="h-16 md:h-20 mx-auto" />
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search and Filter Section (Sticky Top Bar) -->
+    <div class="bg-white/90 backdrop-blur-sm sticky top-0 z-20 shadow-sm">
+        <div class="container mx-auto px-4 py-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="relative flex-grow">
+                        <input type="text" id="searchInput" placeholder="کلام، شاعر یا کتاب تلاش کریں..."
+                            class="w-full bg-gray-100 border-2 border-transparent rounded-full text-right px-5 py-2 focus:ring-2 focus:ring-teal-400 focus:border-teal-400 urdu-text urdu-text-sm transition-all" />
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="bi bi-search"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="relative flex-grow">
+                        <select id="categoryFilterDropdown"
+                            class="w-full bg-gray-100 border-2 border-transparent rounded-full text-right px-4 py-2 focus:ring-2 focus:ring-teal-400 focus:border-teal-400 urdu-text urdu-text-sm transition-all appearance-none pr-8 cursor-pointer">
+                            <!-- Options inserted dynamically -->
+                        </select>
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                            <i class="bi bi-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="relative flex-grow">
+                        <select id="poetFilterDropdown"
+                            class="w-full bg-gray-100 border-2 border-transparent rounded-full text-right px-4 py-2 focus:ring-2 focus:ring-teal-400 focus:border-teal-400 urdu-text urdu-text-sm transition-all appearance-none pr-8 cursor-pointer">
+                            <!-- Options inserted dynamically -->
+                        </select>
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                            <i class="bi bi-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 pb-24 max-w-7xl">
+        <!-- Combined Sort and Alphabet Filter -->
+        <div id="sortAndFilterPanel" class="bg-white rounded-xl shadow-md my-6 p-2 hidden md:block">
+            <div class="flex justify-center flex-wrap gap-2 mb-2" id="filterTabs">
+                <button class="filter-tab urdu-text urdu-text-sm active" data-filter="tahajji">حروفِ تہجی</button>
+                <button class="filter-tab urdu-text urdu-text-sm" data-filter="radif">حروفِ ردیف</button>
+                <button class="filter-tab urdu-text urdu-text-sm" data-filter="popular">مقبول ترین</button>
+            </div>
+            <div id="alphabetContent" class="pt-2 border-t border-gray-100">
+                <div id="alphabetNavContainer" class="alphabet-filter-container">
+                    <!-- Alphabet buttons injected dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Kalam List Container -->
+        <div id="kalamListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Kalam items injected here -->
+        </div>
+
+        <div id="noResults" class="text-center py-10 hidden">
+            <i class="bi bi-search-heart text-5xl text-gray-400 mb-4"></i>
+            <p class="urdu-text text-xl text-gray-600">کوئی نتیجہ نہیں ملا۔</p>
+            <p class="urdu-text text-gray-500">براہ کرم کوئی دوسرا لفظ تلاش کریں یا فلٹر تبدیل کریں۔</p>
+        </div>
+
+        <!-- Load More Button -->
+        <div id="loadMoreContainer" class="text-center mt-8">
+            <button id="loadMoreBtn" class="py-2 px-6 rounded-full text-sm urdu-text shadow-lg">
+                مزید لوڈ کریں
+            </button>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation (Mobile Only) -->
+    <div
+        class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-20 p-2 flex justify-around items-center bottom-nav">
+        <button id="mobileToggleFilter" class="bottom-nav-button text-gray-600 flex flex-col items-center">
+            <i class="bi bi-funnel-fill text-xl"></i>
+            <span class="text-xs font-medium">ترتیب و فلٹر</span>
+        </button>
+    </div>
+
+    <!-- WhatsApp Floating Icon -->
+    <a href="https://whatsapp.com/channel/0029Va98TkcKrWQpctdEpu0f" target="_blank" class="whatsapp-fab"
+        aria-label="Join WhatsApp Channel">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Footer Section -->
+    <footer class="footer-bg py-6 text-center shadow-inner">
+        <div class="container mx-auto px-4">
+            <p class="text-sm text-gray-300">
+                کاپی رائٹ © <span id="currentYear"></span> نعت اکیڈمی آرگنائزیشن۔ جملہ حقوق محفوظ ہیں۔
+            </p>
+            <p class="text-xs mt-2 opacity-80 text-gray-400">
+                Founder and managed by
+                <a href="https://www.facebook.com/OwaisRazvi/" target="_blank" class="hover:underline">Owais Razvi</a>
+            </p>
+        </div>
+    </footer>
+
+   <script src="Majmua-e-Kalam.js"></script>
+</body>
+
+</html>

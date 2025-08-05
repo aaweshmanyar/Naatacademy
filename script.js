@@ -1,3 +1,14 @@
+function slugify(text) {
+    return text
+        .toString()
+        .trim()
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^\p{L}\p{N}\-]/gu, '') // Remove everything except letters, numbers, hyphens
+        .replace(/\-+/g, '-') // Replace multiple hyphens with single hyphen
+        .toLowerCase(); // Optional: Lowercase English letters only
+}
+
+
 // async function loadAndMergeCategoriesWithCount() {
 //   const container = document.querySelector('.header-category-buttons-wrap');
 //   if (!container) return;
@@ -145,7 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         kalams.forEach(kalam => {
           // Create HTML structure same as your sample
           const a = document.createElement('a');
-          a.href = `./Pages/lyrics.html?id=${kalam.KalaamID}`;
+          // a.href = `./Pages/lyrics.html?id=${kalam.KalaamID}`;
+          a.href = `./lyrics/lyrics.html?id=${kalam.KalaamID}&slug=${slugify(kalam.Title)}`;
           a.className = 'block';
 
           const article = document.createElement('article');
@@ -249,11 +261,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Function to generate book cards HTML dynamically from an array of book objects
+  //  <a href="./Pages/Bookwriter.html?id=${book.AuthorID}" class="block">
   function generateBookCardsHTML(books) {
     return books
       .map(
         (book) => `
-      <a href="./Pages/Bookwriter.html?id=${book.AuthorID}" class="block">
+      <a href="../Books/Bookwriter.html?id=${book.AuthorID}&bookname=${slugify(book.Title)}" class="block">
         <article class="card p-4 h-full book-card">
           <div class="book-cover">
             <i class="bi bi-book-half"></i>
@@ -356,9 +369,26 @@ async function fetchAndRenderArticles() {
 
     // Assign dummy stats safely (loop if more articles than dummy stats)
     const stats = dummyStats[idx % dummyStats.length];
+   //  <a href="../Pages/article.html?id=${article.ArticleID}" class="block">
+
+   function slugify(text) {
+    return text
+        .toString()
+        .normalize('NFKD') // Handle Urdu/Arabic normalization
+        .replace(/[\u0300-\u036F]/g, '') // Remove diacritics
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w\-ء-ي]/g, '') // Remove all non-word chars except Arabic/Urdu
+        .replace(/\-\-+/g, '-') // Replace multiple - with single -
+        .toLowerCase();
+}
+
+// Example Usage:
+// const slug = slugify(article.Title);
+// URL will look like: /Article/article.html?id=123&slug=akhlaq-nabuwwat
 
     return `
-      <a href="../Pages/article.html?id=${article.ArticleID}" class="block">
+ 
+      <a href="../Article/article.html?id=${article.ArticleID}&slug=${slugify(article.Title)}" class="block">
         <article class="card p-4 relative article-card h-full">
           <h4 class="urdu-text urdu-text-md sm:urdu-text-lg font-semibold text-teal-700 mb-2 text-right article-title">
             ${safe(article.Title)}
@@ -415,7 +445,7 @@ async function fetchAndRenderTopics() {
 
     // Limit to six groups if you want only six cards, or use all if you like
     const html = groups.slice(0, 6).map((group, i) => `
-      <a href="./Pages/Majmua-e-Kalam.html" class="topic-card topic-card-${i+1}">
+      <a href="./Collection/Majmua-e-Kalam.html" class="topic-card topic-card-${i+1}">
         <span class="topic-name">${group.GroupName}</span>
         <span class="topic-count">${fixedCounts[i] || 0}</span>
       </a>
@@ -473,12 +503,13 @@ async function fetchAndRenderPoets() {
 
       // Assign dummy stats safely (loop if more writers than stats)
       const stats = dummyStats[idx % dummyStats.length];
+      // onclick="window.location.href='./Pages/poet.html?id=${writer.WriterID}'"
 
     return `
   <article 
     class="card p-5 poet-card transform transition-all hover:scale-105 bg-gray-50 h-full flex flex-col justify-between"
     style="cursor: pointer;"
-    onclick="window.location.href='./Pages/poet.html?id=${writer.WriterID}'"
+    onclick="window.location.href='../Poets/poet.html?id=${writer.WriterID}&name=${slugify(writer.Name)}'"
   >
     <div>
       <div class="poet-icon-container poet-icon-gradient-${(idx % 4) + 1} flex justify-center">

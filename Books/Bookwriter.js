@@ -1,3 +1,14 @@
+function slugify(text) {
+    return text
+        .toString()
+        .trim()
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^\p{L}\p{N}\-]/gu, '') // Remove everything except letters, numbers, hyphens
+        .replace(/\-+/g, '-') // Replace multiple hyphens with single hyphen
+        .toLowerCase(); // Optional: Lowercase English letters only
+}
+
+
 const fullAlphabet = ['ا', 'آ', 'ب', 'بھ', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ڈ', 'ذ', 'ر', 'ڑ', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ہ', 'ی'];
 
 let fetchedPoetKalaam = [];  // store fetched kalaam to reuse
@@ -107,12 +118,12 @@ function renderPoetryList(data) {
     const views = `${Math.floor(Math.random() * 20) + 5}K`;
     const likes = `${Math.floor(Math.random() * 10) + 1}K`;
     const badgeClass = `badge-${item.CategoryName || ''}`;
-
+   // onclick="window.location.href='./lyrics.html?id=${item.KalaamID}'
     const itemDiv = document.createElement('div');
     itemDiv.className = 'poetry-item';
     itemDiv.innerHTML = `
       <div>
-        <p class="urdu-text urdu-text-md font-medium text-slate-700 mb-1 cursor-pointer"  onclick="window.location.href='./lyrics.html?id=${item.KalaamID}'">${item.Title}</p>
+        <p class="urdu-text urdu-text-md font-medium text-slate-700 mb-1 cursor-pointer"  onclick="window.location.href='../lyrics/lyrics.html?id=${item.KalaamID}&kalam=${slugify(item.Title)}'">${item.Title}</p>
         <div class="flex items-center gap-4 mt-2">
           <span class="category-badge ${badgeClass} urdu-text-xs">${item.CategoryName || ''}</span>
           <div class="poetry-stats">
