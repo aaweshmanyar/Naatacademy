@@ -88,6 +88,16 @@ async function loadKalaamDetail(kalaamId) {
     }
     const kalaam = await response.json();
 
+    const modalWriterNameEl = document.getElementById("modalWriterName");
+    if (modalWriterNameEl) {
+      modalWriterNameEl.textContent = kalaam.WriterName || "نامعلوم مصنف";  // Default if no writer name
+    }
+
+    const modalWriterNameEl2 = document.getElementById("modalWriterName2");
+    if (modalWriterNameEl2) {
+      modalWriterNameEl2.textContent = kalaam.WriterName || "نامعلوم مصنف";  // Default if no writer name
+    }
+
     // ------ Fill modal DATA for dynamic Bahr modal --------
     window.currentBahrInfo = {
       title: kalaam.Bahr || "نامعلوم",
