@@ -1,45 +1,69 @@
 function slugify(text) {
-    return text
-        .toString()
-        .trim()
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/[^\p{L}\p{N}\-]/gu, '') // Remove everything except letters, numbers, hyphens
-        .replace(/\-+/g, '-') // Replace multiple hyphens with single hyphen
-        .toLowerCase(); // Optional: Lowercase English letters only
+  return text
+    .toString()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/[^\p{L}\p{N}\-]/gu, '') // Remove everything except letters, numbers, hyphens (Unicode)
+    .replace(/\-+/g, '-') // Replace multiple hyphens with a single hyphen
+    .toLowerCase(); // Optional: Lowercase English letters only
+}
+
+function updateUrlSlug(slug) {
+  if (!slug) return;
+
+  // Format: /lyrics/slug-title (without quotes, more standard)
+  var cleanSlug = slugify(slug);
+  var newPath = `/lyrics/${cleanSlug}`; // Adjust this path as needed for your server
+
+  // Replace URL in browser without reloading page
+  window.history.replaceState(null, '', newPath);
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Get the kalaam ID from URL parameters
+document.addEventListener("DOMContentLoaded", async function () {
+  // Set current year in footer
+  const currentYearEl = document.getElementById("currentYear");
+  if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+
   const urlParams = new URLSearchParams(window.location.search);
   const kalaamId = urlParams.get("id");
 
-  // Set current year in footer
-  document.getElementById("currentYear").textContent = new Date().getFullYear();
-
   if (kalaamId) {
-    loadKalaamDetail(kalaamId);
+    try {
+      // Await the async load to get the Kalaam data back
+      const kalaam = await loadKalaamDetail(kalaamId);
+      // Only update URL after data is loaded and title is available
+      if (kalaam && kalaam.Title) {
+        updateUrlSlug(kalaam.Title);
+      }
+    } catch (error) {
+      console.error("Error loading kalaam on DOMContentLoaded:", error);
+    }
   } else {
-    // If no ID found, show error and redirect after 3 seconds
+    // If no ID found show error and redirect
     const container = document.getElementById("poetryTextContainer");
-    container.innerHTML = `
-            <div class="text-center py-8">
-                <i class="bi bi-exclamation-triangle-fill text-red-500 text-4xl"></i>
-                <h3 class="urdu-text text-xl mt-4">کلام کا ID نہیں ملا</h3>
-                <p class="urdu-text mt-2">آپ کو 3 سیکنڈ میں مرکزی صفحہ پر ری ڈائریکٹ کیا جا رہا ہے...</p>
-            </div>
-        `;
-
+    if (container) {
+      container.innerHTML = `
+        <div class="text-center py-8">
+          <i class="bi bi-exclamation-triangle-fill text-red-500 text-4xl"></i>
+          <h3 class="urdu-text text-xl mt-4">کلام کا ID نہیں ملا</h3>
+          <p class="urdu-text mt-2">آپ کو 3 سیکنڈ میں مرکزی صفحہ پر ری ڈائریکٹ کیا جا رہا ہے...</p>
+        </div>
+      `;
+    }
     setTimeout(() => {
       window.location.href = "index.html";
     }, 3000);
   }
 
-  // Initialize modals and other interactive elements
+  // Initialize other page functionality
   initializeModals();
   initializeCoupletToggles();
   initializeCopyButtons();
   initializeShareButtons();
+
+  // Load related Kalaam
+  loadRelatedKalaam();
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -79,93 +103,65 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+
 async function loadKalaamDetail(kalaamId) {
   try {
-    // Show loading state
     const container = document.getElementById("poetryTextContainer");
-    container.innerHTML = `
-      <div class="text-center py-8">
-        <i class="bi bi-arrow-repeat animate-spin text-teal-500 text-4xl"></i>
-        <p class="urdu-text mt-4">کلام لوڈ ہو رہا ہے...</p>
-      </div>
-    `;
-
-    // Fetch kalaam details
-    const response = await fetch(
-      `https://updated-naatacademy.onrender.com/api/kalaam/${kalaamId}`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    if (container) {
+      container.innerHTML = `
+        <div class="text-center py-8">
+          <i class="bi bi-arrow-repeat animate-spin text-teal-500 text-4xl"></i>
+          <p class="urdu-text mt-4">کلام لوڈ ہو رہا ہے...</p>
+        </div>
+      `;
     }
+
+    const response = await fetch(`https://updated-naatacademy.onrender.com/api/kalaam/${kalaamId}`);
+    if (!response.ok) throw new Error("Network response was not ok");
     const kalaam = await response.json();
 
+    // Set modal writer name
     const modalWriterNameEl = document.getElementById("modalWriterName");
-    if (modalWriterNameEl) {
-      modalWriterNameEl.textContent = kalaam.WriterName || "نامعلوم مصنف";  // Default if no writer name
-    }
+    if (modalWriterNameEl) modalWriterNameEl.textContent = kalaam.WriterName || "نامعلوم مصنف";
 
     const modalWriterNameEl2 = document.getElementById("modalWriterName2");
-    if (modalWriterNameEl2) {
-      modalWriterNameEl2.textContent = kalaam.WriterName || "نامعلوم مصنف";  // Default if no writer name
-    }
+    if (modalWriterNameEl2) modalWriterNameEl2.textContent = kalaam.WriterName || "نامعلوم مصنف";
 
-    // ------ Fill modal DATA for dynamic Bahr modal --------
+    // Set global Bahr modal data
     window.currentBahrInfo = {
       title: kalaam.Bahr || "نامعلوم",
-      Arkaan: kalaam.Arkaan || "نامعلوم", // Use 'Arkaan' (not 'arkaan') to match your initializeModals usage
-      description: `اس بحر کے بارے میں تفصیل دستیاب نہیں۔`, // You can update this if your API has description
-      count: undefined, // Or provide if API has Bahr summary/count
+      Arkaan: kalaam.Arkaan || "نامعلوم",
+      description: `اس بحر کے بارے میں تفصیل دستیاب نہیں۔`,
+      count: undefined,
     };
 
-    // Update the page title and headers
+    // Update page title, headers and meta info
     document.title = `${kalaam.Title} | Naat Academy`;
     document.getElementById("kalamTitle").textContent = kalaam.Title;
     document.getElementById("breadcrumbKalamTitle").textContent = kalaam.Title;
 
-    // Update meta information
-    document.querySelector(
-      ".meta-info-item .meta-value.urdu-text"
-    ).textContent = kalaam.WriterName || "نامعلوم";
+    document.querySelector(".meta-info-item .meta-value.urdu-text").textContent = kalaam.WriterName || "نامعلوم";
     document.querySelector(".meta-count").textContent = kalaam.ViewCount || "0";
-    document.getElementById("bahrName").textContent = kalaam.Bahr
-      ? `بحر: ${kalaam.Bahr}`
-      : "بحر: نامعلوم";
-    document.getElementById("bahrArkaan").textContent = kalaam.Arkaan
-      ? `ارکان: ${kalaam.Arkaan}`
-      : "ارکان: نامعلوم";
+    document.getElementById("bahrName").textContent = kalaam.Bahr ? `بحر: ${kalaam.Bahr}` : "بحر: نامعلوم";
+    document.getElementById("bahrArkaan").textContent = kalaam.Arkaan ? `ارکان: ${kalaam.Arkaan}` : "ارکان: نامعلوم";
 
-    document
-      .getElementById("bahrBoxTrigger")
-      .setAttribute("data-bahr", kalaam.Bahr || "نامعلوم");
-    document
-      .getElementById("bahrBoxTrigger")
-      .setAttribute("data-arkaan", kalaam.Arkaan || "نامعلوم");
+    const bahrBoxTrigger = document.getElementById("bahrBoxTrigger");
+    if (bahrBoxTrigger) {
+      bahrBoxTrigger.setAttribute("data-bahr", kalaam.Bahr || "نامعلوم");
+      bahrBoxTrigger.setAttribute("data-arkaan", kalaam.Arkaan || "نامعلوم");
+    }
 
-    // Process lines
-    const urduLines = (kalaam.ContentUrdu || "")
-      .split("\n")
-      .filter((line) => line.trim() !== "");
-    const romanLines = (kalaam.ContentRomanUrdu || "")
-      .split("\n")
-      .filter((line) => line.trim() !== "");
-    const englishLines = (kalaam.ContentEnglish || "")
-      .split("\n")
-      .filter((line) => line.trim() !== "");
+    // Process verses lines
+    const urduLines = (kalaam.ContentUrdu || "").split("\n").filter(l => l.trim() !== "");
+    const romanLines = (kalaam.ContentRomanUrdu || "").split("\n").filter(l => l.trim() !== "");
+    const englishLines = (kalaam.ContentEnglish || "").split("\n").filter(l => l.trim() !== "");
 
-    // Ensure all arrays are even and aligned
-    const maxLength = Math.max(
-      urduLines.length,
-      romanLines.length,
-      englishLines.length
-    );
+    const maxLength = Math.max(urduLines.length, romanLines.length, englishLines.length);
     while (urduLines.length < maxLength) urduLines.push("");
-    while (romanLines.length < maxLength)
-      romanLines.push("Data dastiyab nahi hai");
-    while (englishLines.length < maxLength)
-      englishLines.push("Translation not available");
+    while (romanLines.length < maxLength) romanLines.push("Data dastiyab nahi hai");
+    while (englishLines.length < maxLength) englishLines.push("Translation not available");
 
     let coupletsHTML = "";
-
     for (let i = 0; i < maxLength; i += 2) {
       const urduLine1 = urduLines[i] || "";
       const urduLine2 = urduLines[i + 1] || "";
@@ -175,51 +171,50 @@ async function loadKalaamDetail(kalaamId) {
       const englishLine2 = englishLines[i + 1] || "";
 
       coupletsHTML += `
-        <div class="couplet">
-          <p class="misra urdu-text" data-ur="${urduLine1}" data-ro="${romanLine1}" data-en="${englishLine1}">${urduLine1}</p>
-          <p class="misra urdu-text" data-ur="${urduLine2}" data-ro="${romanLine2}" data-en="${englishLine2}">${urduLine2}</p>
-          <div class="translation-content">
-            <div class="copy-box box-roman">
-              <h4 class="roman-text">Roman Urdu</h4>
-              <p class="roman-text">${romanLine1}${
-        romanLine2 ? "<br>" + romanLine2 : ""
-      }</p>
-              <span class="copy-feedback">Copied!</span>
-            </div>
-            <div class="copy-box box-meaning">
-              <h4 class="urdu-text">English Translation</h4>
-              <p class="urdu-text">${englishLine1}${
-        englishLine2 ? "<br>" + englishLine2 : ""
-      }</p>
-              <span class="copy-feedback">کاپی ہوگیا!</span>
-            </div>
+      <div class="couplet">
+        <p class="misra urdu-text" data-ur="${urduLine1}" data-ro="${romanLine1}" data-en="${englishLine1}">${urduLine1}</p>
+        <p class="misra urdu-text" data-ur="${urduLine2}" data-ro="${romanLine2}" data-en="${englishLine2}">${urduLine2}</p>
+        <div class="translation-content">
+          <div class="copy-box box-roman">
+            <h4 class="roman-text">Roman Urdu</h4>
+            <p class="roman-text">${romanLine1}${romanLine2 ? "<br>" + romanLine2 : ""}</p>
+            <span class="copy-feedback">Copied!</span>
+          </div>
+          <div class="copy-box box-meaning">
+            <h4 class="urdu-text">English Translation</h4>
+            <p class="urdu-text">${englishLine1}${englishLine2 ? "<br>" + englishLine2 : ""}</p>
+            <span class="copy-feedback">کاپی ہوگیا!</span>
           </div>
         </div>
+      </div>
       `;
     }
+    if (container) container.innerHTML = coupletsHTML;
 
-    // Render the couplets
-    container.innerHTML = coupletsHTML;
-
-    // Reinitialize page functionality
+    // Re-initialize functions that rely on dynamic content
     initializeLanguageToggle();
     initializeCoupletToggles();
     initializeCopyButtons();
+
+    return kalaam;
   } catch (error) {
     console.error("Error loading kalaam details:", error);
     const container = document.getElementById("poetryTextContainer");
-    container.innerHTML = `
+    if (container) {
+      container.innerHTML = `
       <div class="text-center py-8">
         <i class="bi bi-exclamation-triangle-fill text-red-500 text-4xl"></i>
         <h3 class="urdu-text text-xl mt-4">کلام لوڈ کرنے میں مسئلہ پیش آیا</h3>
         <p class="urdu-text mt-2">${error.message}</p>
-        <button onclick="window.location.href='index.html'" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-full">
-          مرکزی صفحہ پر جائیں
-        </button>
+        <button onclick="window.location.href='index.html'" 
+          class="mt-4 px-4 py-2 bg-green-500 text-white rounded-full">مرکزی صفحہ پر جائیں</button>
       </div>
-    `;
+      `;
+    }
+    return null;
   }
 }
+
 
 // Rest of the JavaScript functions remain the same...
 function initializeLanguageToggle() {
@@ -520,17 +515,16 @@ async function loadRelatedKalaam() {
 
       const cardHTML = `
                 <a href="lyrics.html?id=${kalaam.KalaamID}&slug=${slugify(kalaam.Title)}" class="card">
-                    <h3 class="urdu-text font-bold text-teal-700">${
-                      kalaam.Title || "بلا عنوان"
-                    }</h3>
+                    <h3 class="urdu-text font-bold text-teal-700">${kalaam.Title || "بلا عنوان"
+        }</h3>
                     <p class="urdu-text text-gray-600">${displayLine}</p>
                     <div class="related-post-stats">
                         <span><i class="bi bi-heart-fill"></i>${formatNumber(
-                          kalaam.Likes || 2.4
-                        )}k</span>
+          kalaam.Likes || 2.4
+        )}k</span>
                         <span><i class="bi bi-eye-fill"></i>${formatNumber(
-                          kalaam.Views || 3.2
-                        )}k</span>
+          kalaam.Views || 3.2
+        )}k</span>
                     </div>
                 </a>
             `;
