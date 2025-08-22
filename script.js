@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Create HTML structure same as your sample
           const a = document.createElement('a');
           // a.href = `./Pages/lyrics.html?id=${kalam.KalaamID}`;
-          a.href = `./lyrics/lyrics.html?id=${kalam.KalaamID}&slug=${slugify(kalam.Title)}`;
+          a.href = `./lyrics/lyrics.html?id=${kalam.KalaamID}&slug=${slugify(kalam.slug)}`;
           a.className = 'block';
 
           const article = document.createElement('article');

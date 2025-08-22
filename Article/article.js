@@ -1,3 +1,15 @@
+function slugify(text) {
+  return text
+    .toString()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    // Keep Urdu letters (\u0600-\u06FF), numbers (\u0660-\u0669 for Arabic digits, 0-9), and hyphens
+    .replace(/[^\u0600-\u06FF0-9\-]/g, '') 
+    .replace(/\-+/g, '-') // Replace multiple hyphens with a single hyphen
+    .replace(/-$/, '')    // Remove trailing hyphen if any
+    .replace(/^-/, '');   // Remove starting hyphen if any
+}
+
 function cleanText(text) {
     return text?.replace(/(<([^>]+)>)/gi, "") || "تفصیل دستیاب نہیں";
   }
@@ -17,6 +29,9 @@ function cleanText(text) {
 
       const article = await res.json();
       console.log("Article Data:", article);
+
+       //URL Change 
+    window.history.replaceState({}, '', `/article/${slugify(article.Title)}`);
 
       // Update content
       document.querySelector(".article-title").textContent = article.Title || "عنوان دستیاب نہیں";

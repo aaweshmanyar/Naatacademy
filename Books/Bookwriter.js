@@ -1,17 +1,57 @@
 function slugify(text) {
-    return text
-        .toString()
-        .trim()
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/[^\p{L}\p{N}\-]/gu, '') // Remove everything except letters, numbers, hyphens
-        .replace(/\-+/g, '-') // Replace multiple hyphens with single hyphen
-        .toLowerCase(); // Optional: Lowercase English letters only
+  return (
+    text
+      .toString()
+      .trim()
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      // Keep Urdu letters (\u0600-\u06FF), numbers (\u0660-\u0669 for Arabic digits, 0-9), and hyphens
+      .replace(/[^\u0600-\u06FF0-9\-]/g, "")
+      .replace(/\-+/g, "-") // Replace multiple hyphens with a single hyphen
+      .replace(/-$/, "") // Remove trailing hyphen if any
+      .replace(/^-/, "")
+  );
 }
 
+const fullAlphabet = [
+  "ا",
+  "آ",
+  "ب",
+  "بھ",
+  "پ",
+  "ت",
+  "ث",
+  "ج",
+  "چ",
+  "ح",
+  "خ",
+  "د",
+  "ڈ",
+  "ذ",
+  "ر",
+  "ڑ",
+  "ز",
+  "ژ",
+  "س",
+  "ش",
+  "ص",
+  "ض",
+  "ط",
+  "ظ",
+  "ع",
+  "غ",
+  "ف",
+  "ق",
+  "ک",
+  "گ",
+  "ل",
+  "م",
+  "ن",
+  "و",
+  "ہ",
+  "ی",
+];
 
-const fullAlphabet = ['ا', 'آ', 'ب', 'بھ', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ڈ', 'ذ', 'ر', 'ڑ', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ہ', 'ی'];
-
-let fetchedPoetKalaam = [];  // store fetched kalaam to reuse
+let fetchedPoetKalaam = []; // store fetched kalaam to reuse
 
 async function loadBookDetail() {
   const params = new URLSearchParams(window.location.search);
@@ -24,31 +64,45 @@ async function loadBookDetail() {
 
   try {
     // Fetch book details
-    const bookResponse = await fetch(`https://updated-naatacademy.onrender.com/api/books/${id}`);
+    const bookResponse = await fetch(
+      `https://updated-naatacademy.onrender.com/api/books/${id}`
+    );
     const book = await bookResponse.json();
 
+    //Url Change
+     window.history.replaceState({}, '', `/book/${slugify(book.Title)}`);
+
     // Fetch Kalaam for this book
-    const kalaamResponse = await fetch(`https://updated-naatacademy.onrender.com/api/kalaam/book/${id}?limit=100`);
+    const kalaamResponse = await fetch(
+      `https://updated-naatacademy.onrender.com/api/kalaam/book/${id}?limit=100`
+    );
     let kalaamData = await kalaamResponse.json();
 
     // Defensive: If API response is in the form { data: [...] } use .data
-    if (!Array.isArray(kalaamData) && kalaamData && Array.isArray(kalaamData.data)) {
+    if (
+      !Array.isArray(kalaamData) &&
+      kalaamData &&
+      Array.isArray(kalaamData.data)
+    ) {
       kalaamData = kalaamData.data;
     }
 
-    fetchedPoetKalaam = Array.isArray(kalaamData)
-      ? kalaamData
-      : [];
+    fetchedPoetKalaam = Array.isArray(kalaamData) ? kalaamData : [];
 
     // Sort by Title (Urdu)
-    fetchedPoetKalaam.sort((a, b) => a.Title && b.Title ? a.Title.localeCompare(b.Title, 'ur') : 0);
+    fetchedPoetKalaam.sort((a, b) =>
+      a.Title && b.Title ? a.Title.localeCompare(b.Title, "ur") : 0
+    );
 
     // Setup vars for display
-    const imageUrl = book.CoverImageURL ||
-      'https://res.cloudinary.com/awescreative/image/upload/v1749156252/Awes/writer.svg';
+    const imageUrl =
+      book.CoverImageURL ||
+      "https://res.cloudinary.com/awescreative/image/upload/v1749156252/Awes/writer.svg";
     const authorName = book.AuthorName || "نامعلوم مصنف";
     const bookTitle = book.Title || "نامعلوم کتاب";
-    const groupName = book.GroupName || (book.SectionName ? book.SectionName : "نامعلوم مجموعہ");
+    const groupName =
+      book.GroupName ||
+      (book.SectionName ? book.SectionName : "نامعلوم مجموعہ");
 
     // Display book and author
     document.getElementById("poet-detail").innerHTML = `
@@ -69,7 +123,6 @@ async function loadBookDetail() {
 
     // Build alphabet nav
     renderAlphabetNav();
-
   } catch (err) {
     console.error("Error loading book detail:", err);
     document.getElementById("poet-detail").textContent = "Book not found.";
@@ -77,16 +130,18 @@ async function loadBookDetail() {
 }
 
 function renderAlphabetNav() {
-  const alphabetNav = document.getElementById('alphabetNavContainer');
-  alphabetNav.innerHTML = '';
+  const alphabetNav = document.getElementById("alphabetNavContainer");
+  alphabetNav.innerHTML = "";
 
-  fullAlphabet.forEach(char => {
-    const button = document.createElement('button');
-    button.className = 'alphabet-button urdu-text urdu-text-lg';
+  fullAlphabet.forEach((char) => {
+    const button = document.createElement("button");
+    button.className = "alphabet-button urdu-text urdu-text-lg";
     button.textContent = char;
 
-    button.addEventListener('click', () => {
-      const filtered = fetchedPoetKalaam.filter(item => item.Title && item.Title.startsWith(char));
+    button.addEventListener("click", () => {
+      const filtered = fetchedPoetKalaam.filter(
+        (item) => item.Title && item.Title.startsWith(char)
+      );
       renderPoetryList(filtered);
     });
 
@@ -96,36 +151,40 @@ function renderAlphabetNav() {
 
 function renderPoetryList(data) {
   const poetryListContainer = document.getElementById("poetryList");
-  poetryListContainer.innerHTML = '';
+  poetryListContainer.innerHTML = "";
 
   if (!data || data.length === 0) {
     poetryListContainer.innerHTML = `<p class="text-center text-gray-500 urdu-text urdu-text-base">اس کتاب میں کوئی کلام موجود نہیں۔</p>`;
     return;
   }
 
-  let currentLetter = '';
-  data.forEach(item => {
+  let currentLetter = "";
+  data.forEach((item) => {
     const firstLetter = item.Title ? item.Title.charAt(0) : "";
     if (firstLetter !== currentLetter) {
       currentLetter = firstLetter;
-      const headerDiv = document.createElement('div');
+      const headerDiv = document.createElement("div");
       headerDiv.id = `letter-${currentLetter}`;
-      headerDiv.className = 'poetry-section-header';
+      headerDiv.className = "poetry-section-header";
       headerDiv.innerHTML = `<span>${currentLetter}</span>`;
       poetryListContainer.appendChild(headerDiv);
     }
 
     const views = `${Math.floor(Math.random() * 20) + 5}K`;
     const likes = `${Math.floor(Math.random() * 10) + 1}K`;
-    const badgeClass = `badge-${item.CategoryName || ''}`;
-   // onclick="window.location.href='./lyrics.html?id=${item.KalaamID}'
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'poetry-item';
+    const badgeClass = `badge-${item.CategoryName || ""}`;
+    // onclick="window.location.href='./lyrics.html?id=${item.KalaamID}'
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "poetry-item";
     itemDiv.innerHTML = `
       <div>
-        <p class="urdu-text urdu-text-md font-medium text-slate-700 mb-1 cursor-pointer"  onclick="window.location.href='../lyrics/lyrics.html?id=${item.KalaamID}&kalam=${slugify(item.Title)}'">${item.Title}</p>
+        <p class="urdu-text urdu-text-md font-medium text-slate-700 mb-1 cursor-pointer"  onclick="window.location.href='../lyrics/lyrics.html?id=${
+          item.KalaamID
+        }&kalam=${slugify(item.Title)}'">${item.Title}</p>
         <div class="flex items-center gap-4 mt-2">
-          <span class="category-badge ${badgeClass} urdu-text-xs">${item.CategoryName || ''}</span>
+          <span class="category-badge ${badgeClass} urdu-text-xs">${
+      item.CategoryName || ""
+    }</span>
           <div class="poetry-stats">
             <span class="stats-item flex items-center gap-1 urdu-text-xs">
               <i class="bi bi-eye-fill"></i>${views}

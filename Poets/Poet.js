@@ -1,3 +1,16 @@
+function slugify(text) {
+  return text
+    .toString()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    // Keep Urdu letters (\u0600-\u06FF), numbers (\u0660-\u0669 for Arabic digits, 0-9), and hyphens
+    .replace(/[^\u0600-\u06FF0-9\-]/g, '') 
+    .replace(/\-+/g, '-') // Replace multiple hyphens with a single hyphen
+    .replace(/-$/, '')    // Remove trailing hyphen if any
+    .replace(/^-/, '');   // Remove starting hyphen if any
+}
+
+
 const fullAlphabet = ['ا', 'آ', 'ب', 'بھ', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ڈ', 'ذ', 'ر', 'ڑ', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ہ', 'ی'];
 
 let fetchedPoetKalaam = [];  // store fetched kalaam to reuse
@@ -19,6 +32,9 @@ async function loadPoetDetail() {
     const allKalaam = await kalaamResponse.json();
 
     fetchedPoetKalaam = allKalaam.filter(item => item.WriterName === poet.Name);
+    //Url Change 
+    window.history.replaceState({}, '', `/writer/${slugify(poet.Name)}`);
+
 
     fetchedPoetKalaam.sort((a, b) => a.Title.localeCompare(b.Title, 'ur'));
 
@@ -98,7 +114,7 @@ function renderPoetryList(data) {
     itemDiv.className = 'poetry-item';
     itemDiv.innerHTML = `
       <div>
-        <p class="urdu-text urdu-text-md font-medium text-slate-700 mb-1 cursor-pointer"  onclick="window.location.href='lyrics.html?id=${item.KalaamID}'">${item.Title}</p>
+        <p class="urdu-text urdu-text-md font-medium text-slate-700 mb-1 cursor-pointer"  onclick="window.location.href='../lyrics/lyrics.html?id=${item.KalaamID}&slug=${item.slug}'">${item.Title}</p>
         <div class="flex items-center gap-4 mt-2">
           <span class="category-badge ${badgeClass} urdu-text-xs">${item.CategoryName}</span>
           <div class="poetry-stats">

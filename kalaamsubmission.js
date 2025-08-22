@@ -19,11 +19,10 @@ document.getElementById('kalamForm').addEventListener('submit', async (e) => {
   };
 
   try {
-<<<<<<< HEAD
-    const res = await fetch('http://localhost:5000/api/kalamsub', {
-=======
+
+
     const res = await fetch('https://updated-naatacademy.onrender.com/api/kalamsub', {
->>>>>>> 9ee79c8c6d599102bc3435ae2e78f9105da174da
+
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -44,58 +43,6 @@ document.getElementById('kalamForm').addEventListener('submit', async (e) => {
         errorMsg = await res.text() || errorMsg;
       }
       alert('خرابی ہوئی: ' + errorMsg);
-<<<<<<< HEAD
-    }
-  } catch (error) {
-    alert('سرور سے رابطہ میں مسئلہ: ' + error.message);
-  }
-});
-
-
-
-// 
-document.getElementById('mazmoonForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const f = e.target;
-
-  const data = {
-    name: f.name.value.trim(),
-    email: f.email.value.trim(),
-    whatsapp: f.whatsapp.value.trim(),
-    city: f.city.value.trim(),
-    country: f.country.value.trim(),
-    mazmoon_title: f.mazmoon_title.value.trim(),
-    mazmoon_category: f.mazmoon_category.value,
-    mazmoon_content: f.mazmoon_content.value.trim()
-  };
-
-  try {
-    const res = await fetch('http://localhost:5000/api/mazmoon', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    if (res.ok) {
-      const result = await res.json();
-      alert(result.message);
-      f.reset();
-    } else {
-      let errorMsg = 'براہ کرم دوبارہ کوشش کریں';
-      try {
-        const errData = await res.json();
-        errorMsg = errData.error || errorMsg;
-      } catch {
-        errorMsg = await res.text() || errorMsg;
-      }
-      alert('خرابی ہوئی: ' + errorMsg);
-    }
-  } catch (error) {
-    alert('سرور سے رابطہ میں مسئلہ: ' + error.message);
-  }
-});
-=======
     }
   } catch (error) {
     alert('سرور سے رابطہ میں مسئلہ: ' + error.message);
@@ -214,4 +161,3 @@ async function fetchStats() {
 // Call the function on page load
 document.addEventListener('DOMContentLoaded', fetchStats);
 
->>>>>>> 9ee79c8c6d599102bc3435ae2e78f9105da174da

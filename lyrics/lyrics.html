@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-   <meta property="og:title" content="">
-   <meta property="og:description" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-        <link rel="stylesheet" href="lyrics.css">
+    <link rel="stylesheet" href="lyrics.css">
 </head>
 
 <body class="bg-gray-100">
@@ -29,121 +29,126 @@
                         alt="لوگو" class="h-16 md:h-20"></a>
                 <nav class="flex items-center space-x-4 space-x-reverse"><a href="index.html"
                         class="text-gray-700 hover:text-green-700 urdu-text text-sm font-medium">سرورق</a><a
-                        href="../Books/books.html" class="text-gray-700 hover:text-green-700 urdu-text text-sm font-medium">کتب</a><a
-                        href="/bazmedurood.html" class="text-gray-700 hover:text-green-700 urdu-text text-sm font-medium">درود شریف</a>
+                        href="../Books/books.html"
+                        class="text-gray-700 hover:text-green-700 urdu-text text-sm font-medium">کتب</a><a
+                        href="/bazmedurood.html"
+                        class="text-gray-700 hover:text-green-700 urdu-text text-sm font-medium">درود شریف</a>
                 </nav>
             </div>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-8">
-    <nav class="breadcrumb-nav urdu-text">
-        <a href="index.html">مرکزی صفحہ</a>
-        <span class="separator"><i class="bi bi-chevron-left"></i></span>
-        <a href="index.html">منتخب کلام</a>
-        <span class="separator"><i class="bi bi-chevron-left"></i></span>
-        <span id="breadcrumbKalamTitle">مصطفیٰ جانِ رحمت پہ لاکھوں سلام</span>
-    </nav>
-    <div class="kalaam-detail-container">
-        <div class="language-toggle-container">
-            <div id="languageToggle" class="language-toggle">
-                <span class="toggle-option active urdu-text" data-lang="ur">اردو</span>
-                <span class="toggle-option roman-text" data-lang="ro">Roman</span>
-            </div>
-        </div>
-        <header class="kalaam-header">
-            <h1 id="kalamTitle"></h1>
-        </header>
-        <div class="meta-info-grid">
-            <div id="authorBoxTrigger" class="meta-info-item clickable">
-                <div class="meta-icon author-icon"><i class="bi bi-pen-fill"></i></div>
-                <div class="meta-info text-right">
-                    <p class="meta-label urdu-text">شاعر</p>
-                    <p class="meta-value urdu-text">امام احمد رضا خان</p>
+        <nav class="breadcrumb-nav urdu-text">
+            <a href="index.html">مرکزی صفحہ</a>
+            <span class="separator"><i class="bi bi-chevron-left"></i></span>
+            <a href="index.html">منتخب کلام</a>
+            <span class="separator"><i class="bi bi-chevron-left"></i></span>
+            <span id="breadcrumbKalamTitle">مصطفیٰ جانِ رحمت پہ لاکھوں سلام</span>
+        </nav>
+        <div class="kalaam-detail-container">
+            <div class="language-toggle-container">
+                <div id="languageToggle" class="language-toggle">
+                    <span class="toggle-option active urdu-text" data-lang="ur">اردو</span>
+                    <span class="toggle-option roman-text" data-lang="ro">Roman</span>
                 </div>
             </div>
-            <div id="bahrBoxTrigger" class="meta-info-item clickable">
-                <div class="meta-icon bahr-icon"><i class="bi bi-music-note-beamed"></i></div>
-                <div class="meta-info text-right">
-                    <p class="meta-label urdu-text" id="bahrName">بحر: متدارک مثمن</p>
-                    <p class="meta-value urdu-text bahr-value" id="bahrArkaan">فعلن فعلن فعلن فعلن</p>
+            <header class="kalaam-header">
+                <h1 id="kalamTitle"></h1>
+            </header>
+            <div class="meta-info-grid">
+                <div id="authorBoxTrigger" class="meta-info-item clickable">
+                    <div class="meta-icon author-icon"><i class="bi bi-pen-fill"></i></div>
+                    <div class="meta-info text-right">
+                        <p class="meta-label urdu-text">شاعر</p>
+                        <p class="meta-value urdu-text">امام احمد رضا خان</p>
+                    </div>
+                </div>
+                <div id="bahrBoxTrigger" class="meta-info-item clickable">
+                    <div class="meta-icon bahr-icon"><i class="bi bi-music-note-beamed"></i></div>
+                    <div class="meta-info text-right">
+                        <p class="meta-label urdu-text" id="bahrName">بحر: متدارک مثمن</p>
+                        <p class="meta-value urdu-text bahr-value" id="bahrArkaan">فعلن فعلن فعلن فعلن</p>
+                    </div>
+                </div>
+                <div class="meta-info-item">
+                    <div class="meta-icon category-icon"><i class="bi bi-tag-fill"></i></div>
+                    <div class="meta-info text-right">
+                        <p class="meta-label urdu-text">صنف: سلام</p>
+                        <p class="meta-value urdu-text">کل پوسٹس: <span class="meta-count">128</span></p>
+                    </div>
                 </div>
             </div>
-            <div class="meta-info-item">
-                <div class="meta-icon category-icon"><i class="bi bi-tag-fill"></i></div>
-                <div class="meta-info text-right">
-                    <p class="meta-label urdu-text">صنف: سلام</p>
-                    <p class="meta-value urdu-text">کل پوسٹس: <span class="meta-count">128</span></p>
-                </div>
-            </div>
-        </div>
 
-        <div id="poetryTextContainer" class="poetry-content-area">
-            <!-- Content will be loaded dynamically -->
-        </div>
+            <div id="poetryTextContainer" class="poetry-content-area">
+                <!-- Content will be loaded dynamically -->
+            </div>
 
-        <div class="action-bar">
-            <div class="action-group">
-                <button id="likeButton" class="action-button like-button">
-                    <i class="bi bi-heart"></i>
-                    <span class="action-label urdu-text text-xs">پسند</span>
-                    <span class="count" data-initial-count="18256">18.3k</span>
-                </button>
-                <button id="shareButton" class="action-button share-button">
-                    <i class="bi bi-share"></i>
-                    <span class="action-label urdu-text text-xs">شیئر</span>
-                </button>
-                <a href="https://whatsapp.com/channel/YOUR_CHANNEL_ID" target="_blank" class="action-button whatsapp-button">
-                    <i class="bi bi-whatsapp"></i>
-                    <span class="action-label urdu-text text-xs">چینل</span>
+            <div class="action-bar">
+                <div class="action-group">
+                    <button id="likeButton" class="action-button like-button">
+                        <i class="bi bi-heart"></i>
+                        <span class="action-label urdu-text text-xs">پسند</span>
+                        <span class="count" data-initial-count="0">0</span>
+                    </button>
+
+                    <button id="shareButton" class="action-button share-button">
+                        <i class="bi bi-share"></i>
+                        <span class="action-label urdu-text text-xs">شیئر</span>
+                    </button>
+                    <a href="https://whatsapp.com/channel/YOUR_CHANNEL_ID" target="_blank"
+                        class="action-button whatsapp-button">
+                        <i class="bi bi-whatsapp"></i>
+                        <span class="action-label urdu-text text-xs">چینل</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <section class="related-posts-section mt-12">
+            <div class="section-title-container max-w-5xl mx-auto">
+                <h2 class="section-title urdu-text">
+                    <span
+                        style="display:flex;align-items:center;justify-content:center;width:3.2rem;height:3.2rem;border-radius:50%;margin-right:0.8rem;background-image:linear-gradient(45deg,#26a69a,#80cbc4);">
+                        <i class="bi bi-collection-fill" style="font-size:1.6rem;color:white;"></i>
+                    </span>اسی شاعر کا مزید کلام
+                </h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                <a href="#" class="card">
+                    <h3 class="urdu-text font-bold text-teal-700">سب سے اولیٰ و اعلیٰ</h3>
+                    <p class="urdu-text text-gray-600">سب سے بالا و والا ہمارا نبی...</p>
+                    <div class="related-post-stats">
+                        <span><i class="bi bi-heart-fill"></i>2.1k</span>
+                        <span><i class="bi bi-eye-fill"></i>5.8k</span>
+                    </div>
+                </a>
+                <a href="#" class="card">
+                    <h3 class="urdu-text font-bold text-teal-700">یا الٰہی ہر جگہ</h3>
+                    <p class="urdu-text text-gray-600">جب پڑے مشکل شہِ مشکل کشا...</p>
+                    <div class="related-post-stats">
+                        <span><i class="bi bi-heart-fill"></i>1.8k</span>
+                        <span><i class="bi bi-eye-fill"></i>4.2k</span>
+                    </div>
+                </a>
+                <a href="#" class="card">
+                    <h3 class="urdu-text font-bold text-teal-700">لم یات نظیرک</h3>
+                    <p class="urdu-text text-gray-600">مثل تو نہ شد پیدا جانا...</p>
+                    <div class="related-post-stats">
+                        <span><i class="bi bi-heart-fill"></i>3.5k</span>
+                        <span><i class="bi bi-eye-fill"></i>7.1k</span>
+                    </div>
+                </a>
+                <a href="#" class="card">
+                    <h3 class="urdu-text font-bold text-teal-700">وہ کمالِ حسنِ حضور ہے</h3>
+                    <p class="urdu-text text-gray-600">کہ گمانِ نقص جہاں نہیں...</p>
+                    <div class="related-post-stats">
+                        <span><i class="bi bi-heart-fill"></i>4.0k</span>
+                        <span><i class="bi bi-eye-fill"></i>9.3k</span>
+                    </div>
                 </a>
             </div>
-        </div>
-    </div>
-    <section class="related-posts-section mt-12">
-        <div class="section-title-container max-w-5xl mx-auto">
-            <h2 class="section-title urdu-text">
-                <span style="display:flex;align-items:center;justify-content:center;width:3.2rem;height:3.2rem;border-radius:50%;margin-right:0.8rem;background-image:linear-gradient(45deg,#26a69a,#80cbc4);">
-                    <i class="bi bi-collection-fill" style="font-size:1.6rem;color:white;"></i>
-                </span>اسی شاعر کا مزید کلام
-            </h2>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            <a href="#" class="card">
-                <h3 class="urdu-text font-bold text-teal-700">سب سے اولیٰ و اعلیٰ</h3>
-                <p class="urdu-text text-gray-600">سب سے بالا و والا ہمارا نبی...</p>
-                <div class="related-post-stats">
-                    <span><i class="bi bi-heart-fill"></i>2.1k</span>
-                    <span><i class="bi bi-eye-fill"></i>5.8k</span>
-                </div>
-            </a>
-            <a href="#" class="card">
-                <h3 class="urdu-text font-bold text-teal-700">یا الٰہی ہر جگہ</h3>
-                <p class="urdu-text text-gray-600">جب پڑے مشکل شہِ مشکل کشا...</p>
-                <div class="related-post-stats">
-                    <span><i class="bi bi-heart-fill"></i>1.8k</span>
-                    <span><i class="bi bi-eye-fill"></i>4.2k</span>
-                </div>
-            </a>
-            <a href="#" class="card">
-                <h3 class="urdu-text font-bold text-teal-700">لم یات نظیرک</h3>
-                <p class="urdu-text text-gray-600">مثل تو نہ شد پیدا جانا...</p>
-                <div class="related-post-stats">
-                    <span><i class="bi bi-heart-fill"></i>3.5k</span>
-                    <span><i class="bi bi-eye-fill"></i>7.1k</span>
-                </div>
-            </a>
-            <a href="#" class="card">
-                <h3 class="urdu-text font-bold text-teal-700">وہ کمالِ حسنِ حضور ہے</h3>
-                <p class="urdu-text text-gray-600">کہ گمانِ نقص جہاں نہیں...</p>
-                <div class="related-post-stats">
-                    <span><i class="bi bi-heart-fill"></i>4.0k</span>
-                    <span><i class="bi bi-eye-fill"></i>9.3k</span>
-                </div>
-            </a>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
     <footer class="footer-bg py-8 text-center shadow-inner mt-12">
         <div class="container mx-auto px-4">
             <p class="urdu-text text-lg mb-2 font-bold text-white/90">نعتیہ اکیڈمی®</p>
@@ -156,34 +161,33 @@
         <div class="modal-content"><button id="closeAuthorModal" class="modal-close-button">×</button>
             <div class="modal-icon" style="background-image: linear-gradient(45deg, #10b981, #34d399);"><i
                     class="bi bi-pen-fill"></i></div>
-            <h2 class="urdu-text text-2xl font-bold text-gray-800 mb-2" id="modalWriterName">امام احمد رضا خان قادری</h2>
+            <h2 class="urdu-text text-2xl font-bold text-gray-800 mb-2" id="modalWriterName">امام احمد رضا خان قادری
+            </h2>
             <h3 class="urdu-text text-lg text-green-600 mb-4" id="modalWriterName2">(اعلیٰ حضرت)</h3>
             <!-- <p class="urdu-text text-base text-gray-700 leading-relaxed text-right">امام احمد رضا خان (1856ء - 1921ء)...
             </p> -->
         </div>
     </div>
-   <div id="bahrDetailModal" class="modal">
-    <div class="modal-content">
-        <button id="closeBahrModal" class="modal-close-button">×</button>
-        <div class="modal-icon" ...><i class="bi bi-music-note-beamed"></i></div>
-        <h2 id="modalBahrTitle" class="urdu-text text-2xl font-bold text-gray-800 mb-2">بحرِ متدارک</h2>
-        <p id="modalBahrDescription" class="urdu-text text-base text-gray-700 leading-relaxed text-right">...</p>
-        <hr class="my-4">
-        <div class="text-right">
-            <h4 class="urdu-text font-bold">ارکان:</h4>
-            <p id="modalBahrArkaan" class="urdu-text text-lg">...</p>
-            <p id="modalBahrCount" class="urdu-text text-sm text-gray-600"></p>
+    <div id="bahrDetailModal" class="modal">
+        <div class="modal-content">
+            <button id="closeBahrModal" class="modal-close-button">×</button>
+            <div class="modal-icon" ...><i class="bi bi-music-note-beamed"></i></div>
+            <h2 id="modalBahrTitle" class="urdu-text text-2xl font-bold text-gray-800 mb-2">بحرِ متدارک</h2>
+            <p id="modalBahrDescription" class="urdu-text text-base text-gray-700 leading-relaxed text-right">...</p>
+            <hr class="my-4">
+            <div class="text-right">
+                <h4 class="urdu-text font-bold">ارکان:</h4>
+                <p id="modalBahrArkaan" class="urdu-text text-lg">...</p>
+                <p id="modalBahrCount" class="urdu-text text-sm text-gray-600"></p>
+            </div>
+            <button id="shareBahrButton" class="modal-share-button">
+                <i class="bi bi-share-fill"></i><span class="urdu-text">بحر کا صفحہ شیئر کریں</span>
+            </button>
         </div>
-        <button id="shareBahrButton" class="modal-share-button">
-            <i class="bi bi-share-fill"></i><span class="urdu-text">بحر کا صفحہ شیئر کریں</span>
-        </button>
     </div>
-</div>
 
     <script src="./lyrics.js"></script>
-    <script>
-        document.getElementById('currentYear').textContent = new Date().getFullYear(); document.addEventListener('DOMContentLoaded', () => { const e = (e, t, o) => { const a = document.getElementById(e), n = document.getElementById(t), s = document.getElementById(o); a && n && s && (n.addEventListener('click', () => a.style.display = 'block'), s.addEventListener('click', () => a.style.display = 'none'), window.addEventListener('click', e => { e.target == a && (a.style.display = 'none') })) }; e('authorDetailModal', 'authorBoxTrigger', 'closeAuthorModal'), e('bahrDetailModal', 'bahrBoxTrigger', 'closeBahrModal'); const t = document.querySelectorAll('.couplet'); t.forEach(e => { e.addEventListener('click', () => { e.classList.contains('active') ? e.classList.remove('active') : (t.forEach(e => e.classList.remove('active')), e.classList.add('active')) }) }); const o = document.getElementById('likeButton'); o && (() => { const e = o.querySelector('i'), t = o.querySelector('.count'); let a = parseInt(t.dataset.initialCount, 10); const n = e => e >= 1e3 ? (e / 1e3).toFixed(1) + 'k' : n; o.addEventListener('click', () => { o.classList.toggle('liked'), o.classList.contains('liked') ? (e.classList.replace('bi-heart', 'bi-heart-fill'), a++) : (e.classList.replace('bi-heart-fill', 'bi-heart'), a--), t.textContent = n(a) }) })(); document.querySelectorAll('.copy-box').forEach(e => { e.addEventListener('click', t => { t.stopPropagation(); const o = e.querySelector('p').innerText; navigator.clipboard.writeText(o).then(() => { e.classList.add('copied'), setTimeout(() => { e.classList.remove('copied') }, 2e3) }) }) }); const a = document.getElementById('languageToggle'), n = document.querySelectorAll('.misra'), s = document.querySelectorAll('.box-roman'), l = document.querySelectorAll('.box-meaning'); const c = e => { n.forEach(t => { t.textContent = t.dataset[e], 'ro' === e ? (t.classList.add('roman-text'), t.classList.remove('urdu-text')) : (t.classList.remove('roman-text'), t.classList.add('urdu-text')) }); s.forEach(t => t.style.display = 'ro' === e ? 'none' : 'grid'); l.forEach(t => t.style.display = 'ur' === e ? 'none' : 'grid'); a.querySelector('.active').classList.remove('active'), a.querySelector(`[data-lang="${e}"]`).classList.add('active') }; a.addEventListener('click', e => { e.target.classList.contains('toggle-option') && !e.target.classList.contains('active') && c(e.target.dataset.lang) }), s.forEach(e => e.style.display = 'none'); const i = document.getElementById('shareButton'), r = document.getElementById('shareBahrButton'); i && navigator.share && i.addEventListener('click', async () => { try { await navigator.share({ title: document.title, text: `یہ خوبصورت کلام پڑھیں: ${document.querySelector('.kalaam-header h1').textContent.trim()}`, url: window.location.href }) } catch (e) { console.error('Share failed:', e) } }), r && navigator.share && r.addEventListener('click', async () => { try { await navigator.share({ title: "بحرِ متدارک - Naat Academy", text: "علمِ عروض میں بحرِ متدارک کے بارے میں جانیں", url: "https://naat.academy/bahr/mutadarik" }) } catch (e) { console.error('Share failed:', e) } }) });
-    </script>
+    
 </body>
 
 </html>

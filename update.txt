@@ -8,27 +8,47 @@ function slugify(text) {
     .toLowerCase(); // Optional: Lowercase English letters only
 }
 
-function updateUrlSlug(slug) {
-  if (!slug) return;
+function updateUrlSlug(id, slug) {
+  if (!id || !slug) return;
 
-  // Format: /lyrics/slug-title (without quotes, more standard)
+  // Format: /lyrics/id/slug-title (without quotes, more standard)
   var cleanSlug = slugify(slug);
-  var newPath = `/lyrics/${cleanSlug}`; // Adjust this path as needed for your server
+  var newPath = `/lyrics/${id}/${cleanSlug}`;
 
   // Replace URL in browser without reloading page
   window.history.replaceState(null, '', newPath);
 }
 
+// Function to parse the URL and extract ID and slug
+function parseUrl() {
+  const pathParts = window.location.pathname.split('/').filter(part => part !== '');
+  
+  // Check if we have a URL in the format /lyrics/id/slug
+  if (pathParts.length >= 3 && pathParts[0] === 'lyrics') {
+    return {
+      id: pathParts[1],
+      slug: pathParts.slice(2).join('/') // In case slug has multiple parts
+    };
+  }
+  
+  // Fallback to query string parameters for backward compatibility
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  
+  return {
+    id: id,
+    slug: null
+  };
+}
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Set current year in footer
   const currentYearEl = document.getElementById("currentYear");
   if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const kalaamId = urlParams.get("id");
-
-  
+  // Parse URL to get ID and slug
+  const urlData = parseUrl();
+  const kalaamId = urlData.id;
 
   if (kalaamId) {
     try {
@@ -36,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const kalaam = await loadKalaamDetail(kalaamId);
       // Only update URL after data is loaded and title is available
       if (kalaam && kalaam.Title) {
-        updateUrlSlug(kalaam.Title);
+        updateUrlSlug(kalaamId, kalaam.slug);
       }
     } catch (error) {
       console.error("Error loading kalaam on DOMContentLoaded:", error);
@@ -69,8 +89,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const kalaamId = urlParams.get("id");
+  const urlData = parseUrl();
+  const kalaamId = urlData.id;
 
   if (kalaamId) {
     try {
@@ -104,7 +124,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 });
-
 
 async function loadKalaamDetail(kalaamId) {
   try {
@@ -227,8 +246,6 @@ async function loadKalaamDetail(kalaamId) {
   }
 }
 
-
-// Rest of the JavaScript functions remain the same...
 function initializeLanguageToggle() {
   const languageToggle = document.getElementById("languageToggle");
   const misraElements = document.querySelectorAll(".misra");
@@ -332,8 +349,6 @@ function initializeCopyButtons() {
   });
 }
 
-// Update the initializeShareButtons function
-// Update the initializeShareButtons function
 function initializeShareButtons() {
   const shareButton = document.getElementById("shareButton");
   const whatsappButton = document.querySelector(".whatsapp-button");
@@ -369,13 +384,11 @@ function initializeShareButtons() {
 // Specific function for WhatsApp sharing
 function shareOnWhatsApp() {
   const kalaamTitle = document.getElementById("kalamTitle").textContent.trim();
-  const urlParams = new URLSearchParams(window.location.search);
-  const kalaamId = urlParams.get("id");
+  const urlData = parseUrl();
+  const kalaamId = urlData.id;
 
   // Create share URL with both ID and title
-  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics.html?id=${kalaamId}&kalam=${encodeURIComponent(
-    kalaamTitle
-  )}`;
+  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics/${kalaamId}/${slugify(kalaamTitle)}`;
 
   // Create WhatsApp share link
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
@@ -389,11 +402,11 @@ function shareOnWhatsApp() {
 // Updated shareKalaam function (general sharing)
 function shareKalaam() {
   const kalaamTitle = document.getElementById("kalamTitle").textContent.trim();
-  const urlParams = new URLSearchParams(window.location.search);
-  const kalaamId = urlParams.get("id");
+  const urlData = parseUrl();
+  const kalaamId = urlData.id;
 
   // Create share URL with both ID and title
-  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics.html?id=${kalaamId}&kalam=${kalaamTitle}`;
+  const shareUrl = `https://freelancework02.github.io/UP_Frontend/lyrics/${kalaamId}/${slugify(kalaamTitle)}`;
 
   if (navigator.share) {
     // Web Share API (for mobile devices)
@@ -486,7 +499,6 @@ function shareKalaam() {
   }
 });
 
-
 async function loadRelatedKalaam() {
   try {
     const response = await fetch(
@@ -498,8 +510,8 @@ async function loadRelatedKalaam() {
     const allKalaam = await response.json();
 
     // Get the current kalaam ID from URL to exclude it from related
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentKalaamId = urlParams.get("id");
+    const urlData = parseUrl();
+    const currentKalaamId = urlData.id;
 
     // Filter out the current kalaam and get random 4 kalaams
     const filteredKalaam = allKalaam.filter((k) => k._id !== currentKalaamId);
@@ -523,7 +535,7 @@ async function loadRelatedKalaam() {
         firstLine.length > 30 ? firstLine.substring(0, 30) + "..." : firstLine;
 
       const cardHTML = `
-                <a href="lyrics.html?id=${kalaam.KalaamID}&slug=${slugify(kalaam.Title)}" class="card">
+                <a href="/lyrics/${kalaam.KalaamID}/${slugify(kalaam.slug || "بلا عنوان")}" class="card">
                     <h3 class="urdu-text font-bold text-teal-700">${kalaam.Title || "بلا عنوان"
         }</h3>
                     <p class="urdu-text text-gray-600">${displayLine}</p>
