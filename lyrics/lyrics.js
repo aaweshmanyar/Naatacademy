@@ -28,8 +28,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
   const kalaamId = urlParams.get("id");
 
-  
-
   if (kalaamId) {
     try {
       // Await the async load to get the Kalaam data back
@@ -128,16 +126,6 @@ async function loadKalaamDetail(kalaamId) {
 
     const modalWriterNameEl2 = document.getElementById("modalWriterName2");
     if (modalWriterNameEl2) modalWriterNameEl2.textContent = kalaam.WriterName || "نامعلوم مصنف";
-    const likeButton = document.getElementById("likeButton");
-    if (likeButton) {
-      // If you store count as integer in kalaam.Likes
-      const likeCount = typeof kalaam.Likes === "number" ? kalaam.Likes : 0;
-      const countSpan = likeButton.querySelector(".count");
-      if (countSpan) {
-        countSpan.dataset.initialCount = likeCount;
-        countSpan.textContent = formatNumber(likeCount);
-      }
-    }
 
     // Set global Bahr modal data
     window.currentBahrInfo = {
