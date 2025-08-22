@@ -1,3 +1,14 @@
+function slugify(text) {
+    return text
+        .toString()
+        .trim()
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^\p{L}\p{N}\-]/gu, '') // Remove everything except letters, numbers, hyphens
+        .replace(/\-+/g, '-') // Replace multiple hyphens with single hyphen
+        .toLowerCase(); // Optional: Lowercase English letters only
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
   // Get the kalaam ID from URL parameters
   const urlParams = new URLSearchParams(window.location.search);
@@ -508,7 +519,7 @@ async function loadRelatedKalaam() {
         firstLine.length > 30 ? firstLine.substring(0, 30) + "..." : firstLine;
 
       const cardHTML = `
-                <a href="lyrics.html?id=${kalaam.KalaamID}" class="card">
+                <a href="lyrics.html?id=${kalaam.KalaamID}&slug=${slugify(kalaam.Title)}" class="card">
                     <h3 class="urdu-text font-bold text-teal-700">${
                       kalaam.Title || "بلا عنوان"
                     }</h3>

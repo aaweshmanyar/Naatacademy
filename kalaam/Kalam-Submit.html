@@ -497,23 +497,23 @@
 
             // --- Populate Recent Submissions (Dummy Data) ---
             const recentKalamList = document.getElementById('recentKalam');
-            // const kalamData = [
-            //     { name: 'محمد اویس', title: 'وہی رب ہے جس نے تجھ کو', city: 'کراچی' },
-            //     { name: 'علی رضا', title: 'لم یات نظیرک فی نظر', city: 'لاہور' },
-            //     { name: 'فاطمہ خان', title: 'کوئی سلیقہ ہے آرزو کا', city: 'دہلی' },
-            //     { name: 'حسنین مشتاق', title: 'کعبے کے در کے سامنے', city: 'ممبئی' },
-            //     { name: 'زینب قادری', title: 'یہ سب تمہارا کرم ہے آقا', city: 'حیدرآباد' }
-            // ];
+            const kalamData = [
+                { name: 'محمد اویس', title: 'وہی رب ہے جس نے تجھ کو', city: 'کراچی' },
+                { name: 'علی رضا', title: 'لم یات نظیرک فی نظر', city: 'لاہور' },
+                { name: 'فاطمہ خان', title: 'کوئی سلیقہ ہے آرزو کا', city: 'دہلی' },
+                { name: 'حسنین مشتاق', title: 'کعبے کے در کے سامنے', city: 'ممبئی' },
+                { name: 'زینب قادری', title: 'یہ سب تمہارا کرم ہے آقا', city: 'حیدرآباد' }
+            ];
             populateList(recentKalamList, kalamData, 'bi-mic-fill');
 
             const recentMazmoonList = document.getElementById('recentMazmoon');
-            // const mazmoonData = [
-            //     { name: 'ڈاکٹر احمد قادری', title: 'سیرت النبی ﷺ کے روشن پہلو', city: 'اسلام آباد' },
-            //     { name: 'عائشہ صدیقی', title: 'اسلامی فنِ خطاطی کی تاریخ', city: 'علی گڑھ' },
-            //     { name: 'یوسف انصاری', title: 'واقعہ کربلا کے اسباق', city: 'لکھنؤ' },
-            //     { name: 'مریم بتول', title: 'شانِ اہل بیت پر ایک نظر', city: 'فیصل آباد' },
-            //     { name: 'بلال احمد', title: 'فضائلِ درود شریف', city: 'ملتان' }
-            // ];
+            const mazmoonData = [
+                { name: 'ڈاکٹر احمد قادری', title: 'سیرت النبی ﷺ کے روشن پہلو', city: 'اسلام آباد' },
+                { name: 'عائشہ صدیقی', title: 'اسلامی فنِ خطاطی کی تاریخ', city: 'علی گڑھ' },
+                { name: 'یوسف انصاری', title: 'واقعہ کربلا کے اسباق', city: 'لکھنؤ' },
+                { name: 'مریم بتول', title: 'شانِ اہل بیت پر ایک نظر', city: 'فیصل آباد' },
+                { name: 'بلال احمد', title: 'فضائلِ درود شریف', city: 'ملتان' }
+            ];
             populateList(recentMazmoonList, mazmoonData, 'bi-journal-text');
 
             function populateList(element, data, iconClass) {

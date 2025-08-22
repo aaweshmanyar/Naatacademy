@@ -1,0 +1,432 @@
+@font-face {
+    font-family: 'NaatFont';
+    src: url('https://res.cloudinary.com/awescreative/raw/upload/v1749150996/Awes/naatfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f7f8fa;
+    color: #374151;
+}
+
+.urdu-text {
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    line-height: 2.3;
+    font-size: 1.15rem;
+}
+
+.urdu-text-xl {
+    font-size: 2.2rem;
+}
+
+.urdu-text-lg {
+    font-size: 1.8rem;
+}
+
+.urdu-text-md {
+    font-size: 1.4rem;
+}
+
+.urdu-text-base {
+    font-size: 1.15rem;
+}
+
+.urdu-text-sm {
+    font-size: 1rem;
+}
+
+.urdu-text-xs {
+    font-size: 0.8rem;
+    letter-spacing: normal;
+}
+
+.header-gradient {
+    background: linear-gradient(to bottom, #f0fdfa, #f7f8fa);
+}
+
+.card {
+    background-color: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    border: 1px solid #eef2f7;
+}
+
+.page-header {
+    background-color: transparent;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-title-container {
+    background-color: #e0f2f1;
+    color: #0f766e;
+    border-radius: 9999px;
+    padding: 0.5rem 2rem;
+}
+
+.header-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.header-icon:hover {
+    background-color: #f1f5f9;
+    transform: scale(1.05);
+}
+
+.writer-details-section {
+    text-align: center;
+    background-color: #fcfcfd;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.writer-avatar-wrapper {
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    padding: 0.25rem;
+    background: linear-gradient(45deg, #a5b4fc, #c4b5fd);
+}
+
+.writer-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid white;
+}
+
+.follow-button {
+    background-color: #14b8a6;
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+    display: inline-block;
+    margin-top: 0.75rem;
+    cursor: pointer;
+}
+
+.follow-button:hover {
+    background-color: #0d9488;
+}
+
+.sticky-filters {
+    position: sticky;
+    top: 0;
+    background-color: rgba(247, 248, 250, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 40;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.filter-tab {
+    padding: 0.6rem 1.75rem;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.filter-tab.active {
+    background-color: #334155;
+    color: white;
+    border-color: #334155;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(51, 65, 85, 0.15);
+}
+
+.alphabet-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.alphabet-button.available {
+    background-color: #eef2ff;
+    color: #4338ca;
+    cursor: pointer;
+}
+
+.alphabet-button.available:hover {
+    background-color: #e0e7ff;
+    transform: scale(1.1);
+}
+
+.alphabet-button.unavailable {
+    background-color: #f8fafc;
+    color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+.poetry-item {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s;
+    border-right: 4px solid transparent;
+}
+
+.poetry-item:hover {
+    background-color: #f8fafc;
+    border-right-color: #818cf8;
+}
+
+.poetry-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #94a3b8;
+}
+
+.category-badge {
+    font-family: 'Playpen Sans', sans-serif;
+    padding: 0.2rem 0.8rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 0.75rem;
+}
+
+.badge-نعت {
+    background-color: #e0f2f1;
+    color: #0d9488;
+}
+
+.badge-منقبت {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+}
+
+.badge-سلام {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.badge-مناجات {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-اصلاحی {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-شجرہ {
+    background-color: #fefce8;
+    color: #a16207;
+}
+
+.badge-قصیدہ {
+    background-color: #ede9fe;
+    color: #5b21b6;
+}
+
+.badge-رباعیات {
+    background-color: #fce7f3;
+    color: #9d174d;
+}
+
+.badge-غزل {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.poetry-section-header {
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.poetry-section-header span {
+    display: inline-block;
+    background-color: #f1f5f9;
+    color: #4b5563;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.footer-bg {
+    background-color: #1e293b;
+    color: #94a3b8;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-title {
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.chip i {
+    font-size: 1rem;
+}
+
+.chip-summary {
+    background-color: #f5f3ff;
+    color: #5b21b6;
+    border-color: #ddd6fe;
+}
+
+.chip-summary:hover {
+    background-color: #ede9fe;
+    border-color: #c4b5fd;
+}
+
+.chip-topic {
+    background-color: #f0fdfa;
+    color: #0f766e;
+    border-color: #ccfbf1;
+}
+
+.chip-topic:hover {
+    background-color: #ccfbf1;
+    border-color: #99f6e4;
+}
+
+.icon-topic {
+    color: #a7f3d0;
+}
+
+.glossary-chip {
+    background-color: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.glossary-chip:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    font-size: 2rem;
+    color: #94a3b8;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.fab {
+    position: fixed;
+    bottom: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 900;
+}
+
+.fab:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top {
+    right: 1.5rem;
+    background-color: #475569;
+    display: none;
+}
+
+.whatsapp-channel {
+    left: 1.5rem;
+    background-color: #25d366;
+    font-size: 1.5rem;
+}

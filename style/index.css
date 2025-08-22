@@ -1,0 +1,988 @@
+/* Custom Font for Urdu Text */
+@font-face {
+    font-family: 'NaatFont';
+    src: url('https://res.cloudinary.com/awescreative/raw/upload/v1749150996/Awes/naatfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Base Body Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    font-size: 1.125rem;
+}
+
+/* Urdu Text Specific Styles */
+.urdu-text {
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    line-height: 2.2;
+    font-size: 1.125rem;
+}
+
+.urdu-text-xl {
+    font-size: 2.2rem;
+}
+
+.urdu-text-lg {
+    font-size: 1.8rem;
+}
+
+.urdu-text-md {
+    font-size: 1.4rem;
+}
+
+.urdu-text-base {
+    font-size: 1.125rem;
+}
+
+.urdu-text-sm {
+    font-size: 1rem;
+}
+
+.urdu-text-xs {
+    font-size: 0.9rem;
+}
+
+.urdu-text-xxs {
+    font-size: 0.75rem;
+}
+
+/* New smaller font size */
+
+/* Header Gradient Background */
+.header-gradient {
+    background: linear-gradient(to bottom, #d2f4f2, #ffffff);
+}
+
+/* Card Styles */
+.card {
+    background-color: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08), 0 3px 6px -3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    padding: 0.8rem;
+    /* Reduced padding */
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+}
+
+/* Section Title Container */
+.section-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centered title */
+    position: relative;
+    margin-bottom: 1rem;
+    /* Reduced margin */
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Section Title Styles */
+.section-title {
+    font-weight: 700;
+    color: #2a415a;
+    font-size: 1.8rem;
+    /* Reduced font size */
+}
+
+/* Responsive Section Title Size */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* Slide Up Fade In Animation */
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slideUpFadeIn {
+    animation: slideUpFadeIn 0.6s ease-out forwards;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* Category Tags */
+.category-tag {
+    padding: 0.1rem 1.0rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.category-tag.selected {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+    border-color: currentColor;
+}
+
+.category-naat {
+    background-color: #e0f2f1;
+    color: #00796b;
+    border-color: #b2dfdb;
+}
+
+.category-naat.selected,
+.category-naat:hover {
+    background-color: #00796b;
+    color: white;
+    border-color: #00695c;
+}
+
+.category-salam {
+    background-color: #e3f2fd;
+    color: #1565c0;
+    border-color: #bbdefb;
+}
+
+.category-salam.selected,
+.category-salam:hover {
+    background-color: #1565c0;
+    color: white;
+    border-color: #1e88e5;
+}
+
+.category-manqabat {
+    background-color: #fff8e1;
+    color: #ff8f00;
+    border-color: #ffecb3;
+}
+
+.category-manqabat.selected,
+.category-manqabat:hover {
+    background-color: #ff8f00;
+    color: white;
+    border-color: #fb8c00;
+}
+
+.category-mazameen {
+    background-color: #e0f7fa;
+    color: #00838f;
+    border-color: #b2ebf2;
+}
+
+.category-mazameen.selected,
+.category-mazameen:hover {
+    background-color: #00838f;
+    color: white;
+    border-color: #0097a7;
+}
+
+.category-kutub {
+    background-color: #f9f0ff;
+    color: #8e44ad;
+    border-color: #e8daef;
+}
+
+.category-kutub.selected,
+.category-kutub:hover {
+    background-color: #8e44ad;
+    color: white;
+    border-color: #7d3c98;
+}
+
+.category-hamd {
+    background-color: #e1f5fe;
+    color: #0277bd;
+    border-color: #b3e5fc;
+}
+
+.category-hamd.selected,
+.category-hamd:hover {
+    background-color: #0277bd;
+    color: white;
+    border-color: #0288d1;
+}
+
+.category-kalam {
+    background-color: #f1f8e9;
+    color: #558b2f;
+    border-color: #dcedc8;
+}
+
+.category-kalam.selected,
+.category-kalam:hover {
+    background-color: #558b2f;
+    color: white;
+    border-color: #689f38;
+}
+
+.category-tazmeen {
+    background-color: #e0f2f1;
+    color: #00695c;
+    border-color: #b2dfdb;
+    font-size: 1.17rem;
+}
+
+.category-tazmeen.selected,
+.category-tazmeen:hover {
+    background-color: #00695c;
+    color: white;
+    border-color: #004d40;
+}
+
+
+.category-name {
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 16px;
+    /* Reduced from 20px */
+}
+
+.category-post-count {
+    font-family: 'Playpen Sans Arabic', sans-serif;
+}
+
+.category-post-count {
+    font-size: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: inherit;
+    padding: 0.05rem 0.35rem;
+    border-radius: 9999px;
+    margin-right: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+}
+
+.poet-card .poet-icon-container {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    padding: 0.4rem;
+    margin: 0 auto 0.9rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.poet-card .poet-icon-container img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.poet-icon-gradient-1 {
+    background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+}
+
+.poet-icon-gradient-2 {
+    background-image: linear-gradient(to right, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.poet-icon-gradient-3 {
+    background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+}
+
+.poet-icon-gradient-4 {
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: #6b7280;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
+}
+
+.stats-bar i {
+    font-size: 1.1rem;
+    margin-right: 0.25rem;
+}
+
+.stats-bar .urdu-text-xxs {
+    font-size: 0.75rem !important;
+}
+
+.share-icon-button {
+    background-color: transparent;
+    color: #9ca3af;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    margin-left: auto;
+    border: 1px solid #e5e7eb;
+}
+
+.share-icon-button:hover {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    transform: scale(1.1);
+    border-color: #d1d5db;
+}
+
+.share-icon-button i {
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+#searchOptionsContainer {
+    display: block;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 1rem 0;
+    position: static;
+    transform: none;
+    width: auto;
+    max-width: none;
+}
+
+.milad-banner-section {
+    background-image: linear-gradient(to bottom right, #fce0e6, #e0f2f1);
+    border-color: #f8bbd0;
+}
+
+.milad-tab-button {
+    background-color: transparent;
+    border: 1px solid currentColor;
+    color: #555;
+    transition: all 0.3s ease;
+    padding-top: 0.2rem;
+    /* Reduced padding */
+    padding-bottom: 0.2rem;
+    /* Reduced padding */
+    line-height: normal;
+    /* Removed line height */
+}
+
+.milad-tab-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.milad-tab-button.active-tab {
+    color: white;
+    background-image: linear-gradient(45deg, var(--tab-start-color), var(--tab-end-color));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.milad-tab-button[data-tab="milad-seerat"].active-tab {
+    --tab-start-color: #8b5cf6;
+    --tab-end-color: #a78bfa;
+}
+
+.milad-tab-button[data-tab="milad-poetry"].active-tab {
+    --tab-start-color: #ec4899;
+    --tab-end-color: #f472b6;
+}
+
+.milad-tab-button[data-tab="milad-articles"].active-tab {
+    --tab-start-color: #ef4444;
+    --tab-end-color: #f87171;
+}
+
+.milad-tab-button[data-tab="milad-events"].active-tab {
+    --tab-start-color: #f97316;
+    --tab-end-color: #fb923c;
+}
+
+.pill-button {
+    background-color: #10b981;
+    color: white;
+    padding: 0.2rem 0.7rem;
+    /* Reduced vertical padding */
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    /* Reduced font size */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pill-button:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.pill-button i {
+    margin-right: 0.3rem;
+    font-size: 0.75rem;
+}
+
+/* Adjusted icon size */
+
+.article-category-tag {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.section-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    background-color: #f0f2f5;
+    border-radius: 1.25rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #10b981;
+    transition: opacity 0.5s ease-out;
+}
+
+.hidden {
+    display: none;
+}
+
+.content-section.hidden {
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.content-section {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
+}
+
+.footer-bg {
+    background-color: #2a415a;
+    color: #cbd5e1;
+}
+
+.cta-social-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.cta-social-button:hover {
+    transform: scale(1.05);
+}
+
+.cta-social-button i {
+    font-size: 1.3rem;
+    margin-right: 0.5rem;
+}
+
+.instagram-button {
+    background: #d6249f;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.facebook-button {
+    background-color: #1877F2;
+}
+
+.anwanat-section {
+    background-image: linear-gradient(to bottom right, #e0e7ff, #c7d2fe);
+    border: 1px solid #c7d2fe;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.anwanat-section .section-title-container {
+    border-bottom: 0;
+}
+
+.topic-card {
+    background-color: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.topic-card .topic-name {
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: block;
+    line-height: 1.5;
+}
+
+.topic-card .topic-count {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 0.1rem 0.6rem;
+    border-radius: 9999px;
+}
+
+.topic-card-1 {
+    border-color: #fecaca;
+    background-color: #fef2f2;
+}
+
+.topic-card-1 .topic-name {
+    color: #b91c1c;
+}
+
+.topic-card-1 .topic-count {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.topic-card-2 {
+    border-color: #bfdbfe;
+    background-color: #eff6ff;
+}
+
+.topic-card-2 .topic-name {
+    color: #1d4ed8;
+}
+
+.topic-card-2 .topic-count {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.topic-card-3 {
+    border-color: #fcd34d;
+    background-color: #fffbeb;
+}
+
+.topic-card-3 .topic-name {
+    color: #b45309;
+}
+
+.topic-card-3 .topic-count {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.topic-card-4 {
+    border-color: #bbf7d0;
+    background-color: #f0fdf4;
+}
+
+.topic-card-4 .topic-name {
+    color: #15803d;
+}
+
+.topic-card-4 .topic-count {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.topic-card-5 {
+    border-color: #d8b4fe;
+    background-color: #faf5ff;
+}
+
+.topic-card-5 .topic-name {
+    color: #7e22ce;
+}
+
+.topic-card-5 .topic-count {
+    background-color: #f3e8ff;
+    color: #6b21a8;
+}
+
+.topic-card-6 {
+    border-color: #a7f3d0;
+    background-color: #f0fdfa;
+}
+
+.topic-card-6 .topic-name {
+    color: #047857;
+}
+
+.topic-card-6 .topic-count {
+    background-color: #ccfbf1;
+    color: #065f46;
+}
+
+.bi-heart,
+.bi-heart-fill {
+    font-size: 0.9rem !important;
+}
+
+.poet-stats-bar {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.whatsapp-fab {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.whatsapp-fab:hover {
+    background-color: #1DAE52;
+    transform: scale(1.1);
+}
+
+.whatsapp-fab i {
+    font-size: 2rem;
+}
+
+/* Styles for New Kalam Section */
+.kalam-banner-section {
+    background-image: linear-gradient(to bottom right, #e0f7fa, #e8f5e9);
+    border: 1px solid #b2dfdb;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.kalam-card p.urdu-text-md {
+    text-align: center;
+}
+
+.kalam-tab-button {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+    transition: all 0.3s ease;
+    padding: 0.3rem 1rem;
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.kalam-tab-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-color: #a5b4fc;
+}
+
+.kalam-tab-button.active-tab {
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.kalam-tab-button[data-tab="kalam-naat"].active-tab {
+    background-color: #2dd4bf;
+}
+
+.kalam-tab-button[data-tab="kalam-kalam"].active-tab {
+    background-color: #60a5fa;
+}
+
+.kalam-tab-button[data-tab="kalam-manqabat"].active-tab {
+    background-color: #fbbf24;
+}
+
+.kalam-tab-button[data-tab="kalam-tazmeen"].active-tab {
+    background-color: #f472b6;
+}
+
+.kalam-tab-button[data-tab="kalam-intikhab"].active-tab {
+    background-color: #a78bfa;
+}
+
+.kalam-card .stats-bar {
+    gap: 0.75rem;
+}
+
+.kalam-card .share-icon-button {
+    width: 24px;
+    height: 24px;
+}
+
+.kalam-card .share-icon-button i {
+    font-size: 0.7rem;
+}
+
+/* New CTA Section Styles */
+.new-cta-section {
+    background-image: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    border-radius: 1.25rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+}
+
+.new-cta-section::before {
+    content: '\F618';
+    /* Bootstrap icons whatsapp unicode */
+    font-family: 'bootstrap-icons';
+    position: absolute;
+    right: -30px;
+    /* Adjusted for RTL */
+    top: 50%;
+    transform: translateY(-50%) rotate(15deg);
+    font-size: 12rem;
+    color: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+}
+
+.new-cta-content {
+    position: relative;
+    z-index: 1;
+}
+
+.new-cta-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    background-color: #fff;
+    color: #128C7E;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.new-cta-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.new-cta-button i {
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+}
+
+/* Poet Book Button Styles */
+.poet-book-button {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0.8rem;
+    border-radius: 9999px;
+    background-color: #10b981;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.poet-book-button:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.poet-book-button .book-name {
+    font-weight: 600;
+}
+
+.poet-book-button .book-kalam-count {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.1rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-family: 'Inter', sans-serif;
+}
+
+/* New Kutub Section Styles */
+.kutub-banner-section {
+    background-image: linear-gradient(to bottom right, #f3e5f5, #e8eaf6);
+    border: 1px solid #d1c4e9;
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.kutub-tab-button {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+    transition: all 0.3s ease;
+    padding: 0.3rem 1rem;
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.kutub-tab-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.kutub-tab-button.active-tab {
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.kutub-tab-button[data-tab="kutub-naatia"].active-tab {
+    background-color: #7e57c2;
+}
+
+.kutub-tab-button[data-tab="kutub-seerat"].active-tab {
+    background-color: #5c6bc0;
+}
+
+.kutub-tab-button[data-tab="kutub-fazail"].active-tab {
+    background-color: #42a5f5;
+}
+
+.kutub-tab-button[data-tab="kutub-magazine"].active-tab {
+    background-color: #26a69a;
+}
+
+.kutub-tab-button[data-tab="kutub-pdf"].active-tab {
+    background-color: #ef5350;
+}
+
+.book-card .book-cover {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background-color: #e2e8f0;
+    margin-bottom: 0.75rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.book-card .book-cover i {
+    font-size: 3rem;
+    color: #94a3b8;
+}
+
+
+/* Major Topics Section */
+.major-topic-card {
+    background-color: #fff;
+    border-radius: 1.25rem;
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.major-topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.major-topic-card .major-topic-image-container {
+    aspect-ratio: 2.35 / 1;
+    overflow: hidden;
+}
+
+.major-topic-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.major-topic-card:hover img {
+    transform: scale(1.05);
+}
+
+.major-topic-card-content {
+    padding: 1rem;
+    text-align: center;
+}
+
+.major-topic-card .topic-title {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.major-topic-card .topic-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #6b7280;
+}
+
+.major-topic-card-1 {
+    border-bottom: 5px solid #16a34a;
+}
+
+.major-topic-card-1 .topic-title {
+    color: #15803d;
+}
+
+.major-topic-card-2 {
+    border-bottom: 5px solid #d97706;
+}
+
+.major-topic-card-2 .topic-title {
+    color: #b45309;
+}
+
+.major-topic-card-3 {
+    border-bottom: 5px solid #dc2626;
+}
+
+.major-topic-card-3 .topic-title {
+    color: #b91c1c;
+}
