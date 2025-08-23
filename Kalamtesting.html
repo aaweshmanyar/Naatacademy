@@ -967,8 +967,8 @@
         <div id="NaatLyrics-search-results" class="NaatLyrics-search-popup-content space-y-3"></div>
     </div>
 
-    
-   <script>
+
+    <!-- <script>
     document.addEventListener('DOMContentLoaded', () => {
     const API_ENDPOINT = 'https://updated-naatacademy.onrender.com/api/romankalam/paged';
     const mainContainer = document.querySelector('main');
@@ -1429,10 +1429,1166 @@
     init();
 });
 
-   </script>
+   </script> -->
 
 
-    
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const API_ENDPOINT = 'https://updated-naatacademy.onrender.com/api/romankalam/paged';
+            const mainContainer = document.querySelector('main');
+            const bottomNav = document.querySelector('.NaatLyrics-bottom-nav');
+            const pages = document.querySelectorAll('.NaatLyrics-page');
+            const backButton = document.getElementById('NaatLyrics-back-button');
+            const brandHeader = document.getElementById('NaatLyrics-brand');
+            const storyViewer = document.getElementById('NaatLyrics-story-viewer');
+            const searchPopup = document.getElementById('NaatLyrics-search-popup');
+            const searchIconBtn = document.getElementById('NaatLyrics-search-icon-btn');
+            const searchCloseBtn = document.getElementById('NaatLyrics-search-close-btn');
+            const searchInput = document.getElementById('NaatLyrics-search-input');
+            const searchChipsContainer = document.getElementById('NaatLyrics-search-chips-container');
+            const searchResultsContainer = document.getElementById('NaatLyrics-search-results');
+
+            const categoryEmojis = { 'Kalam': '📜', 'Naat': '📗', 'Manqabat': '📙', 'Hamd': '📒', 'Salam': '📘', 'Munajat': '📕', 'Tazmeen': '📓', 'Default': '📜' };
+            const topicGradients = {
+                "Yaad-e-Madinah": 'linear-gradient(45deg, #2563eb, #60a5fa)',
+                "Shaan-e-Mustafa": 'linear-gradient(45deg, #059669, #34d399)',
+                "Jashn-e-Milad": 'linear-gradient(45deg, #d97706, #f59e0b)',
+                "Munajat": 'linear-gradient(45deg, #991b1b, #ef4444)',
+                "Ishq-e-Rasool": 'linear-gradient(45deg, #db2777, #f472b6)',
+                "Default": 'linear-gradient(45deg, #e0c3fc 0%, #8ec5fc 100%)'
+            };
+
+            let kalamData = [];
+            let featuredStoryList = [];
+            let currentStoryIndex = 0;
+            let pageHistory = ['majmua'];
+            let storyTimeout;
+
+            const popularKeywords = [
+                "Jashn-e-Milad",
+                "Shaan-e-Mustafa",
+                "Kalam e Aalahazrat",
+                "Naghmat e Akhtar",
+                "Allama Hasan Raza",
+                "Qasida",
+                "Durood o Naat",
+                "Yaad-e-Madinah",
+                "Hazri Darbar e Rislat",
+                "Manqabat e Siddiq e Akbar",
+                "Manqab e Maula Ali"
+            ];
+
+            // Utility functions for saved kalams in local storage
+            const getSavedKalams = () => JSON.parse(localStorage.getItem('savedKalams')) || [];
+            const saveKalam = (id) => {
+                let s = getSavedKalams();
+                if (!s.includes(id)) {
+                    s.push(id);
+                    localStorage.setItem('savedKalams', JSON.stringify(s));
+                }
+            };
+            const unsaveKalam = (id) => {
+                let s = getSavedKalams();
+                localStorage.setItem('savedKalams', JSON.stringify(s.filter(i => i !== id)));
+            };
+            const isKalamSaved = (id) => getSavedKalams().includes(id);
+
+            const formatCount = (n) => (n >= 1000) ? `${(n / 1000).toFixed(1)}k` : n;
+
+            // Fetch kalam data dynamically from your API
+            async function fetchKalamData(limit = 100) {
+                try {
+                    const response = await fetch(`${API_ENDPOINT}?limit=${limit}&offset=0`);
+                    if (!response.ok) throw new Error('Failed to fetch kalam data');
+                    const data = await response.json();
+                    // Convert DB schema fields to your app's expected structure
+                    return data.map(k => ({
+                        id: k.id,
+                        title: k.Title,
+                        shayar: k.Book_Name,       // Adjust if you use real author field
+                        book: k.Book_Name,
+                        category: k.Category,
+                        topic: k.Topic,
+                        topKalam: k.topKalam || false, // Use logic to decide if something is a top kalam
+                        lyrics: k.Kalam_Post
+                    }));
+                } catch (e) {
+                    console.error(e);
+                    return [];
+                }
+            }
+
+            const getCountForKeyword = (keyword) => {
+                const q = keyword.toLowerCase();
+                return kalamData.filter(k =>
+                    k.title.toLowerCase().includes(q) ||
+                    k.shayar.toLowerCase().includes(q) ||
+                    k.topic.toLowerCase().includes(q) ||
+                    k.book.toLowerCase().includes(q) ||
+                    k.category.toLowerCase().includes(q)
+                ).length;
+            };
+
+            // ----------- UI Rendering Utilities -----------
+
+            const renderKalamList = (data, container) => {
+                container.innerHTML = !data.length
+                    ? `<p class="text-center text-gray-500 mt-4">No Kalam found.</p>`
+                    : data.map((k, i) => {
+                        const viewCount = formatCount(Math.floor(Math.random() * 14001) + 10000);
+                        return `
+                    <a href="#" class="NaatLyrics-qalam-item flex items-center" data-id="${k.id}" style="animation-delay: ${i * 30}ms;">
+                        <div class="NaatLyrics-qalam-emoji">${categoryEmojis[k.category] || '📜'}</div>
+                        <div class="flex-grow">
+                            <div class="NaatLyrics-labels-container">
+                                <span class="NaatLyrics-category-label qalam-cat-${k.category?.toLowerCase() || 'default'}">${k.category}</span>
+                                <span class="text-gray-300">/</span>
+                                <span class="NaatLyrics-topic-label" style="background-image: ${topicGradients[k.topic] || topicGradients['Default']}">${k.topic}</span>
+                            </div>
+                            <h2 class="NaatLyrics-qalam-title">${k.title}</h2>
+                            <p class="text-sm text-gray-600 font-semibold">${k.shayar}</p>
+                        </div>
+                        <div class="NaatLyrics-qalam-view-count">👁️ ${viewCount}</div>
+                    </a>`;
+                    }).join('');
+
+                // Add event listeners to all kalam items
+                container.querySelectorAll('.NaatLyrics-qalam-item').forEach(item => {
+                    item.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        showKalamDetailPage(parseInt(this.dataset.id));
+                    });
+                });
+            };
+
+            const setupSlider = () => {
+                const track = document.getElementById('NaatLyrics-slider-track');
+                // Take first 6 naats as "top" for now -- or build logic as needed
+                const featured = kalamData.filter(k => k.topKalam || true).slice(0, 6); // .topKalam if field, otherwise use your own filter
+                featuredStoryList = featured.map(k => ({ ...k }));
+                const gradients = [
+                    'linear-gradient(45deg, #065f46, #10b981)',
+                    'linear-gradient(45deg, #4f46e5, #818cf8)',
+                    'linear-gradient(45deg, #be123c, #fb7185)',
+                    'linear-gradient(45deg, #b45309, #f97316)',
+                    'linear-gradient(45deg, #4c1d95, #8b5cf6)',
+                    'linear-gradient(45deg, #9f1239, #ec4899)'
+                ];
+
+                track.innerHTML = featuredStoryList.map((k, i) => `
+            <div class="NaatLyrics-slider-card" data-index="${i}">
+                <div class="NaatLyrics-slider-card-inner" style="background-image: ${gradients[i % gradients.length]}">
+                    <div class="NaatLyrics-slider-card-labels"><span>${k.category}</span> / <span>${k.topic}</span></div>
+                    <div>
+                        <h3 class="NaatLyrics-slider-card-title">${k.title}</h3>
+                        <p class="NaatLyrics-slider-card-shayar">${k.shayar}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+            };
+
+            // Story Viewer Section
+            const showStory = (k, isSeq = false) => {
+                const content = document.getElementById('NaatLyrics-story-content');
+                let likes = Math.floor(Math.random() * 5000) + 1000;
+                let storyLinesArr = (k.lyrics || '').split('\n').filter(Boolean);
+                let firstTwoLines = storyLinesArr.slice(0, 2).join('<br>');
+
+                // Progress bars (support for multiple stories)
+                content.innerHTML = `
+            <div class="NaatLyrics-story-progress-container">${featuredStoryList.map((_, i) =>
+                    `<div class="NaatLyrics-story-progress-bar ${i === currentStoryIndex ? 'active' : ''}"><div class="NaatLyrics-story-progress-bar-inner"></div></div>`).join('')}
+            </div>
+            <div id="NaatLyrics-story-close" class="NaatLyrics-story-close">&times;</div>
+            <div class="NaatLyrics-story-topic-chip">${k.topic}</div>
+            <div class="NaatLyrics-story-lyrics">${firstTwoLines}</div>
+            <div class="NaatLyrics-story-meta">
+              
+                <p><strong>Book:</strong> ${k.book}</p>
+            </div>
+            <div class="NaatLyrics-story-actions">
+                <button id="NaatLyrics-story-like-btn">❤️ <span id="like-count">${likes}</span></button>
+                <span class="opacity-80">|</span>
+                <span>👁️ ${formatCount(Math.floor(Math.random() * 10000) + 2000)}</span>
+            </div>
+            <div class="NaatLyrics-story-bottom-bar">
+                <button class="NaatLyrics-story-share-btn">Share All</button>
+                <button class="NaatLyrics-story-share-btn">Share on WhatsApp</button>
+            </div>
+        `;
+                storyViewer.classList.add('active');
+                content.querySelector('#NaatLyrics-story-close').addEventListener('click', closeStory);
+                content.querySelector('#NaatLyrics-story-like-btn').addEventListener('click', e => {
+                    e.currentTarget.querySelector('#like-count').innerText = parseInt(e.currentTarget.querySelector('#like-count').innerText) + 1;
+                });
+
+                clearTimeout(storyTimeout);
+                if (isSeq) {
+                    setTimeout(() => {
+                        const bar = content.querySelector('.active .NaatLyrics-story-progress-bar-inner');
+                        if (bar) bar.style.transition = 'width 5s linear';
+                    }, 50);
+                    storyTimeout = setTimeout(() => {
+                        currentStoryIndex++;
+                        if (currentStoryIndex >= featuredStoryList.length) closeStory();
+                        else showStory(featuredStoryList[currentStoryIndex], true);
+                    }, 5000);
+                }
+            };
+
+            const closeStory = () => {
+                clearTimeout(storyTimeout);
+                storyViewer.classList.remove('active');
+            };
+
+            // Sorting, category, topic, writers renderers
+            const setupSorters = () => {
+                const alphaSorter = document.getElementById('NaatLyrics-alphabet-sorter'),
+                    trendSorter = document.getElementById('NaatLyrics-trending-topics'),
+                    tabs = document.querySelector('.NaatLyrics-sorter-tabs'),
+                    panes = document.querySelectorAll('.NaatLyrics-tab-pane');
+
+                alphaSorter.innerHTML = ['Top', 'All', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+                    .map(l => `<button class="NaatLyrics-alpha-button ${l === 'All' ? 'active' : ''}" data-letter="${l}">${l}</button>`).join('');
+
+                const topics = ["All", ...popularKeywords];
+                trendSorter.innerHTML = topics.map(t =>
+                    `<button class="NaatLyrics-trending-topic" data-topic="${t}" style="background-image: ${(topicGradients[t] || topicGradients['Default'])}">
+                ${t} <span class="count">${t === 'All' ? kalamData.length : getCountForKeyword(t)}</span>
+            </button>`
+                ).join('');
+
+                tabs.addEventListener('click', e => {
+                    const btn = e.target.closest('.NaatLyrics-tab-button');
+                    if (!btn) return;
+                    document.querySelector('.NaatLyrics-tab-button.active').classList.remove('active');
+                    btn.classList.add('active');
+                    panes.forEach(p => p.classList.remove('active'));
+                    document.getElementById(`NaatLyrics-${btn.dataset.tab}-pane`).classList.add('active');
+                });
+
+                const filterList = (el, type, value) => {
+                    document.querySelector('.NaatLyrics-alpha-button.active')?.classList.remove('active');
+                    document.querySelector('.NaatLyrics-trending-topic.active')?.classList.remove('active');
+                    el.classList.add('active');
+                    let data;
+                    if (type === 'letter') {
+                        if (value === 'All') data = kalamData;
+                        else if (value === 'Top') data = kalamData.filter(k => k.topKalam || true); // adjust logic for .topKalam
+                        else {
+                            const upperVal = value.toUpperCase();
+                            data = kalamData.filter(k => k.title.toUpperCase().startsWith(upperVal));
+                        }
+                    } else {
+                        if (value === 'All') data = kalamData;
+                        else {
+                            const q = value.toLowerCase();
+                            data = kalamData.filter(k =>
+                                k.title.toLowerCase().includes(q) ||
+                                k.shayar.toLowerCase().includes(q) ||
+                                k.topic.toLowerCase().includes(q) ||
+                                k.book.toLowerCase().includes(q) ||
+                                k.category.toLowerCase().includes(q)
+                            );
+                        }
+                    }
+                    renderKalamList(data, document.getElementById('NaatLyrics-qalam-list'));
+                };
+
+                alphaSorter.addEventListener('click', e => {
+                    const btn = e.target.closest('.NaatLyrics-alpha-button');
+                    if (btn) filterList(btn, 'letter', btn.dataset.letter);
+                });
+                trendSorter.addEventListener('click', e => {
+                    const btn = e.target.closest('.NaatLyrics-trending-topic');
+                    if (btn) filterList(btn, 'topic', btn.dataset.topic);
+                });
+            };
+
+            const renderCategoryList = () => {
+                const container = document.getElementById('NaatLyrics-category-list');
+                const categories = [...new Set(kalamData.map(k => k.category))];
+                container.innerHTML = categories.map(cat =>
+                    `<div class="NaatLyrics-list-item font-bold text-lg">${cat}</div>`).join('');
+            };
+
+            const renderTopicList = () => {
+                const container = document.getElementById('NaatLyrics-topic-list');
+
+                // Count kalams per topic
+                const topicCounts = kalamData.reduce((acc, k) => {
+                    acc[k.topic] = (acc[k.topic] || 0) + 1;
+                    return acc;
+                }, {});
+
+                // Get unique topics sorted by count (descending)
+                const topics = Object.keys(topicCounts).sort((a, b) => topicCounts[b] - topicCounts[a]);
+
+                container.innerHTML = topics.map(topic => `
+        <div class="NaatLyrics-list-item flex justify-between items-center" data-topic="${topic}">
+            <span class="font-bold text-lg">${topic}</span>
+            <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                ${topicCounts[topic]} Kalams
+            </span>
+        </div>
+    `).join('');
+
+                // Add click event listeners to each topic item
+                container.querySelectorAll('.NaatLyrics-list-item').forEach(item => {
+                    item.addEventListener('click', function () {
+                        const topic = this.dataset.topic;
+
+                        // Switch to majmua page
+                        switchPage('majmua');
+
+                        // Wait a moment for the page to switch, then filter by topic
+                        setTimeout(() => {
+                            // Find and click the trending topic button for this topic
+                            const topicButton = document.querySelector(`.NaatLyrics-trending-topic[data-topic="${topic}"]`);
+
+                            if (topicButton) {
+                                topicButton.click();
+                            } else {
+                                // If specific topic button doesn't exist, just show all kalams
+                                document.querySelector('.NaatLyrics-trending-topic[data-topic="All"]')?.click();
+                            }
+                        }, 100);
+                    });
+                });
+            };
+            const renderWriterList = () => {
+                const container = document.getElementById('NaatLyrics-writer-list');
+                // Group by writer
+                const writers = kalamData.reduce((acc, k) => {
+                    if (!acc[k.shayar]) acc[k.shayar] = { books: new Set(), count: 0 };
+                    acc[k.shayar].books.add(k.book);
+                    acc[k.shayar].count++;
+                    return acc;
+                }, {});
+                container.innerHTML = Object.entries(writers).map(([writer, data]) =>
+                    `<div class="NaatLyrics-list-item flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-lg">✍️ ${writer}</h3>
+                    <p class="text-sm text-gray-600 font-semibold mt-1">📚 ${[...data.books].join(', ')}</p>
+                </div>
+                <span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full">${data.count} Kalams</span>
+            </div>`
+                ).join('');
+            };
+
+            // Kalam Detail View
+            const showKalamDetailPage = (id) => {
+                const k = kalamData.find(item => item.id === id);
+                if (!k) return;
+                const saved = isKalamSaved(k.id);
+                const title = `"${k.title}" Lyrics - by ${k.shayar} | Naat Academy`;
+                const description = `Read the complete lyrics for "${k.title}" from the book ${k.book}, written by ${k.shayar}. Available on Naat Academy.`;
+                document.title = title;
+
+                // Set meta description for SEO
+                const descTag = document.querySelector('meta[name="description"]');
+                if (descTag) descTag.setAttribute('content', description);
+                // Add Open Graph/Twitter cards as needed...
+
+                document.getElementById('NaatLyrics-qalam-detail-content').innerHTML = `
+            <h2 class="text-3xl font-extrabold mb-4 text-center NaatLyrics-detail-title">${k.title}</h2>
+            <div class="flex justify-center items-center gap-4 mb-4 text-sm text-gray-500 font-semibold">
+                <span>${categoryEmojis[k.category] || '📜'} ${k.category}</span>
+                <span><i class="bi bi-person-fill"></i> ${k.shayar}</span>
+                <span><i class="bi bi-book-fill"></i> ${k.book}</span>
+            </div>
+            <div class="NaatLyrics-detail-actions">
+                <button class="NaatLyrics-action-btn font-urdu">اردو کلام</button>
+                <button id="NaatLyrics-save-kalam-btn" data-id="${k.id}" class="${saved ? 'saved' : ''}"><i class="bi ${saved ? 'bi-heart-fill' : 'bi-heart'}"></i> ${saved ? 'Saved' : 'Save'}</button>
+                <button id="NaatLyrics-share-kalam-btn" data-id="${k.id}"><i class="bi bi-share-fill"></i> Share</button>
+            </div>
+            <div class="NaatLyrics-qalam-pane">${k.lyrics.replace(/\n/g, '<br>')}</div>
+        `;
+                document.getElementById('NaatLyrics-save-kalam-btn').addEventListener('click', e => {
+                    const btn = e.currentTarget, id = parseInt(btn.dataset.id);
+                    if (isKalamSaved(id)) {
+                        unsaveKalam(id);
+                        btn.innerHTML = '<i class="bi bi-heart"></i> Save';
+                        btn.classList.remove('saved');
+                    } else {
+                        saveKalam(id);
+                        btn.innerHTML = '<i class="bi bi-heart-fill"></i> Saved';
+                        btn.classList.add('saved');
+                    }
+                });
+                document.getElementById('NaatLyrics-share-kalam-btn').addEventListener('click', e => {
+                    const id = parseInt(e.currentTarget.dataset.id);
+                    const kalam = kalamData.find(item => item.id === id);
+                    if (navigator.share) {
+                        navigator.share({
+                            title: `${kalam.title} - Naat Academy`,
+                            text: `Read the beautiful kalam "${kalam.title}" by ${kalam.shayar} on Naat Academy.\n\n${kalam.lyrics.substring(0, 100)}...`,
+                            url: window.location.href,
+                        });
+                    } else {
+                        const shareText = `${kalam.title} - by ${kalam.shayar}\n\n${kalam.lyrics}`;
+                        navigator.clipboard.writeText(shareText).then(() => {
+                            alert('Kalam copied to clipboard!');
+                        });
+                    }
+                });
+                switchPage('qalam-detail', true);
+            };
+
+            // Switch pages helper
+            const switchPage = (id, isDetail = false) => {
+                pages.forEach(p => p.classList.remove('active'));
+                document.getElementById(`NaatLyrics-page-${id}`)?.classList.add('active');
+                let title = "Naat Academy";
+                switch (id) {
+                    case 'category': title = "Categories"; renderCategoryList(); break;
+                    case 'topics': title = "Topics"; renderTopicList(); break;
+                    case 'writers': title = "Writers"; renderWriterList(); break;
+                    case 'saved': title = "Saved Kalams"; renderKalamList(kalamData.filter(k => isKalamSaved(k.id)), document.getElementById('NaatLyrics-saved-list')); break;
+                }
+                backButton.classList.toggle('hidden', !isDetail);
+                brandHeader.classList.toggle('hidden', isDetail);
+                if (!isDetail) {
+                    pageHistory = [id];
+                    document.querySelector('.NaatLyrics-bottom-nav-item.active')?.classList.remove('active');
+                    document.querySelector(`.NaatLyrics-bottom-nav-item[data-page="${id}"]`)?.classList.add('active');
+                } else if (pageHistory[pageHistory.length - 1] !== id) {
+                    pageHistory.push(id);
+                }
+            };
+
+            // Render search chips for popular keywords
+            const renderSearchChips = () => {
+                searchChipsContainer.innerHTML = popularKeywords.map(keyword =>
+                    `<button class="NaatLyrics-search-chip">${keyword}</button>`).join('');
+            };
+
+            //--------------------------------------------------------
+            // Event Listeners & User Interactions
+            //--------------------------------------------------------
+            backButton.addEventListener('click', () => {
+                pageHistory.pop();
+                const prevPage = pageHistory[pageHistory.length - 1] || 'majmua';
+                switchPage(prevPage);
+            });
+
+            bottomNav.addEventListener('click', e => {
+                const item = e.target.closest('.NaatLyrics-bottom-nav-item');
+                if (item) switchPage(item.dataset.page);
+            });
+
+            mainContainer.addEventListener('click', e => {
+                const item = e.target.closest('.NaatLyrics-qalam-item');
+                if (item) {
+                    e.preventDefault();
+                    showKalamDetailPage(parseInt(item.dataset.id));
+                }
+            });
+
+            // Slider click for story
+            document.getElementById('NaatLyrics-slider-track').addEventListener('click', e => {
+                const card = e.target.closest('.NaatLyrics-slider-card');
+                if (card) {
+                    currentStoryIndex = parseInt(card.dataset.index);
+                    showStory(featuredStoryList[currentStoryIndex], true);
+                }
+            });
+
+            searchIconBtn.addEventListener('click', () => searchPopup.classList.add('active'));
+            searchCloseBtn.addEventListener('click', () => searchPopup.classList.remove('active'));
+            searchInput.addEventListener('input', e => {
+                const q = e.target.value.toLowerCase();
+                const results = q.length < 1 ? [] : kalamData.filter(k =>
+                    k.title.toLowerCase().includes(q) ||
+                    k.shayar.toLowerCase().includes(q) ||
+                    k.topic.toLowerCase().includes(q) ||
+                    k.book.toLowerCase().includes(q) ||
+                    k.category.toLowerCase().includes(q)
+                );
+                renderKalamList(results, searchResultsContainer);
+            });
+
+            searchChipsContainer.addEventListener('click', e => {
+                const chip = e.target.closest('.NaatLyrics-search-chip');
+                if (chip) {
+                    searchInput.value = chip.textContent;
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    searchInput.focus();
+                }
+            });
+
+            // Add event listener for search result items
+            searchResultsContainer.addEventListener('click', e => {
+                const item = e.target.closest('.NaatLyrics-qalam-item');
+                if (item) {
+                    e.preventDefault();
+                    showKalamDetailPage(parseInt(item.dataset.id));
+                    searchPopup.classList.remove('active');
+                }
+            });
+
+            //--------------------------------------------------------
+            // Initial App Load
+            //--------------------------------------------------------
+            async function init() {
+                kalamData = await fetchKalamData();
+                // If your API response does not have .topKalam, use logic to define top stories
+                // e.g. mark first 6 as topKalam for story slider
+                kalamData.sort((a, b) => a.title.localeCompare(b.title));
+                setupSlider();
+                setupSorters();
+                renderKalamList(kalamData, document.getElementById('NaatLyrics-qalam-list'));
+                renderSearchChips();
+                document.querySelector('.NaatLyrics-tab-button[data-tab="trending"]')?.click();
+                // Set "All" trending topic to be active on load
+                const allTrendingTopic = document.querySelector('.NaatLyrics-trending-topic[data-topic="All"]');
+                if (allTrendingTopic) allTrendingTopic.click();
+            }
+
+            init();
+        });
+    </script> -->
+
+
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const API_ENDPOINT = 'https://updated-naatacademy.onrender.com/api/romankalam/paged';
+        const SEARCH_ENDPOINT = 'https://updated-naatacademy.onrender.com/api/romankalam/search';
+        const mainContainer = document.querySelector('main');
+        const bottomNav = document.querySelector('.NaatLyrics-bottom-nav');
+        const pages = document.querySelectorAll('.NaatLyrics-page');
+        const backButton = document.getElementById('NaatLyrics-back-button');
+        const brandHeader = document.getElementById('NaatLyrics-brand');
+        const storyViewer = document.getElementById('NaatLyrics-story-viewer');
+        const searchPopup = document.getElementById('NaatLyrics-search-popup');
+        const searchIconBtn = document.getElementById('NaatLyrics-search-icon-btn');
+        const searchCloseBtn = document.getElementById('NaatLyrics-search-close-btn');
+        const searchInput = document.getElementById('NaatLyrics-search-input');
+        const searchChipsContainer = document.getElementById('NaatLyrics-search-chips-container');
+        const searchResultsContainer = document.getElementById('NaatLyrics-search-results');
+
+        const categoryEmojis = { 'Kalam': '📜', 'Naat': '📗', 'Manqabat': '📙', 'Hamd': '📒', 'Salam': '📘', 'Munajat': '📕', 'Tazmeen': '📓', 'Default': '📜' };
+        const topicGradients = {
+            "Yaad-e-Madinah": 'linear-gradient(45deg, #2563eb, #60a5fa)',
+            "Shaan-e-Mustafa": 'linear-gradient(45deg, #059669, #34d399)',
+            "Jashn-e-Milad": 'linear-gradient(45deg, #d97706, #f59e0b)',
+            "Munajat": 'linear-gradient(45deg, #991b1b, #ef4444)',
+            "Ishq-e-Rasool": 'linear-gradient(45deg, #db2777, #f472b6)',
+            "Default": 'linear-gradient(45deg, #e0c3fc 0%, #8ec5fc 100%)'
+        };
+
+        let kalamData = [];
+        let featuredStoryList = [];
+        let currentStoryIndex = 0;
+        let pageHistory = ['majmua'];
+        let storyTimeout;
+        let currentSearchResults = [];
+
+        const popularKeywords = [
+            "Jashn-e-Milad",
+            "Shaan-e-Mustafa",
+            "Kalam e Aalahazrat",
+            "Naghmat e Akhtar",
+            "Allama Hasan Raza",
+            "Qasida",
+            "Durood o Naat",
+            "Yaad-e-Madinah",
+            "Hazri Darbar e Rislat",
+            "Manqabat e Siddiq e Akbar",
+            "Manqab e Maula Ali"
+        ];
+
+        // Utility functions for saved kalams in local storage
+        const getSavedKalams = () => JSON.parse(localStorage.getItem('savedKalams')) || [];
+        const saveKalam = (id) => {
+            let s = getSavedKalams();
+            if (!s.includes(id)) {
+                s.push(id);
+                localStorage.setItem('savedKalams', JSON.stringify(s));
+            }
+        };
+        const unsaveKalam = (id) => {
+            let s = getSavedKalams();
+            localStorage.setItem('savedKalams', JSON.stringify(s.filter(i => i !== id)));
+        };
+        const isKalamSaved = (id) => getSavedKalams().includes(id);
+
+        const formatCount = (n) => (n >= 1000) ? `${(n / 1000).toFixed(1)}k` : n;
+
+        // Fetch kalam data dynamically from your API
+        async function fetchKalamData(limit = 100) {
+            try {
+                const response = await fetch(`${API_ENDPOINT}?limit=${limit}&offset=0`);
+                if (!response.ok) throw new Error('Failed to fetch kalam data');
+                const data = await response.json();
+                // Convert DB schema fields to your app's expected structure
+                return data.map(k => ({
+                    id: k.id,
+                    title: k.Title,
+                    shayar: k.Book_Name,       // Adjust if you use real author field
+                    book: k.Book_Name,
+                    category: k.Category,
+                    topic: k.Topic,
+                    topKalam: k.topKalam || false, // Use logic to decide if something is a top kalam
+                    lyrics: k.Kalam_Post
+                }));
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        }
+
+        // Search kalams from API by title or book name
+        async function searchKalamsFromAPI(searchTerm) {
+            try {
+                const response = await fetch(`${SEARCH_ENDPOINT}?q=${encodeURIComponent(searchTerm)}`);
+                if (!response.ok) throw new Error('Failed to search kalams');
+                const data = await response.json();
+                
+                // Convert DB schema fields to your app's expected structure
+                return data.map(k => ({
+                    id: k.id,
+                    title: k.Title,
+                    shayar: k.Book_Name,
+                    book: k.Book_Name,
+                    category: k.Category,
+                    topic: k.Topic,
+                    topKalam: k.topKalam || false,
+                    lyrics: k.Kalam_Post
+                }));
+            } catch (e) {
+                console.error('API search failed, falling back to local search:', e);
+                // Fallback to local search if API fails
+                const q = searchTerm.toLowerCase();
+                return kalamData.filter(k =>
+                    k.title.toLowerCase().includes(q) ||
+                    k.book.toLowerCase().includes(q) ||
+                    k.topic.toLowerCase().includes(q) ||
+                    k.category.toLowerCase().includes(q) ||
+                    k.shayar.toLowerCase().includes(q)
+                );
+            }
+        }
+
+        // Get kalams by specific topic
+        async function getKalamsByTopic(topic) {
+            try {
+                // First try to get from local data
+                const localResults = kalamData.filter(k => 
+                    k.topic.toLowerCase() === topic.toLowerCase()
+                );
+                
+                if (localResults.length > 0) {
+                    return localResults;
+                }
+                
+                // If not found locally, try API search
+                const results = await searchKalamsFromAPI(topic);
+                return results.filter(k => 
+                    k.topic.toLowerCase().includes(topic.toLowerCase())
+                );
+            } catch (error) {
+                console.error('Error getting kalams by topic:', error);
+                return kalamData.filter(k => 
+                    k.topic.toLowerCase().includes(topic.toLowerCase())
+                );
+            }
+        }
+
+        const getCountForKeyword = (keyword) => {
+            const q = keyword.toLowerCase();
+            return kalamData.filter(k =>
+                k.title.toLowerCase().includes(q) ||
+                k.shayar.toLowerCase().includes(q) ||
+                k.topic.toLowerCase().includes(q) ||
+                k.book.toLowerCase().includes(q) ||
+                k.category.toLowerCase().includes(q)
+            ).length;
+        };
+
+        // ----------- UI Rendering Utilities -----------
+
+        const renderKalamList = (data, container, isSearchResults = false) => {
+            // Store search results for later use
+            if (isSearchResults) {
+                currentSearchResults = data;
+            }
+            
+            container.innerHTML = !data.length
+                ? `<p class="text-center text-gray-500 mt-4">No Kalam found.</p>`
+                : data.map((k, i) => {
+                    const viewCount = formatCount(Math.floor(Math.random() * 14001) + 10000);
+                    return `
+                <a href="#" class="NaatLyrics-qalam-item flex items-center" data-id="${k.id}" style="animation-delay: ${i * 30}ms;">
+                    <div class="NaatLyrics-qalam-emoji">${categoryEmojis[k.category] || '📜'}</div>
+                    <div class="flex-grow">
+                        <div class="NaatLyrics-labels-container">
+                            <span class="NaatLyrics-category-label qalam-cat-${k.category?.toLowerCase() || 'default'}">${k.category}</span>
+                            <span class="text-gray-300">/</span>
+                            <span class="NaatLyrics-topic-label" style="background-image: ${topicGradients[k.topic] || topicGradients['Default']}">${k.topic}</span>
+                        </div>
+                        <h2 class="NaatLyrics-qalam-title">${k.title}</h2>
+                        <p class="text-sm text-gray-600 font-semibold">${k.shayar}</p>
+                    </div>
+                    <div class="NaatLyrics-qalam-view-count">👁️ ${viewCount}</div>
+                </a>`;
+                }).join('');
+
+            // Add event listeners to all kalam items
+            container.querySelectorAll('.NaatLyrics-qalam-item').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    showKalamDetailPage(parseInt(this.dataset.id));
+                });
+            });
+        };
+
+        const setupSlider = () => {
+            const track = document.getElementById('NaatLyrics-slider-track');
+            // Take first 6 naats as "top" for now -- or build logic as needed
+            const featured = kalamData.filter(k => k.topKalam || true).slice(0, 6); // .topKalam if field, otherwise use your own filter
+            featuredStoryList = featured.map(k => ({ ...k }));
+            const gradients = [
+                'linear-gradient(45deg, #065f46, #10b981)',
+                'linear-gradient(45deg, #4f46e5, #818cf8)',
+                'linear-gradient(45deg, #be123c, #fb7185)',
+                'linear-gradient(45deg, #b45309, #f97316)',
+                'linear-gradient(45deg, #4c1d95, #8b5cf6)',
+                'linear-gradient(45deg, #9f1239, #ec4899)'
+            ];
+
+            track.innerHTML = featuredStoryList.map((k, i) => `
+        <div class="NaatLyrics-slider-card" data-index="${i}">
+            <div class="NaatLyrics-slider-card-inner" style="background-image: ${gradients[i % gradients.length]}">
+                <div class="NaatLyrics-slider-card-labels"><span>${k.category}</span> / <span>${k.topic}</span></div>
+                <div>
+                    <h3 class="NaatLyrics-slider-card-title">${k.title}</h3>
+                    <p class="NaatLyrics-slider-card-shayar">${k.shayar}</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+        };
+
+        // Story Viewer Section
+        const showStory = (k, isSeq = false) => {
+            const content = document.getElementById('NaatLyrics-story-content');
+            let likes = Math.floor(Math.random() * 5000) + 1000;
+            let storyLinesArr = (k.lyrics || '').split('\n').filter(Boolean);
+            let firstTwoLines = storyLinesArr.slice(0, 2).join('<br>');
+
+            // Progress bars (support for multiple stories)
+            content.innerHTML = `
+        <div class="NaatLyrics-story-progress-container">${featuredStoryList.map((_, i) =>
+                `<div class="NaatLyrics-story-progress-bar ${i === currentStoryIndex ? 'active' : ''}"><div class="NaatLyrics-story-progress-bar-inner"></div></div>`).join('')}
+        </div>
+        <div id="NaatLyrics-story-close" class="NaatLyrics-story-close">&times;</div>
+        <div class="NaatLyrics-story-topic-chip">${k.topic}</div>
+        <div class="NaatLyrics-story-lyrics">${firstTwoLines}</div>
+        <div class="NaatLyrics-story-meta">
+          
+            <p><strong>Book:</strong> ${k.book}</p>
+        </div>
+        <div class="NaatLyrics-story-actions">
+            <button id="NaatLyrics-story-like-btn">❤️ <span id="like-count">${likes}</span></button>
+            <span class="opacity-80">|</span>
+            <span>👁️ ${formatCount(Math.floor(Math.random() * 10000) + 2000)}</span>
+        </div>
+        <div class="NaatLyrics-story-bottom-bar">
+            <button class="NaatLyrics-story-share-btn">Share All</button>
+            <button class="NaatLyrics-story-share-btn">Share on WhatsApp</button>
+        </div>
+    `;
+            storyViewer.classList.add('active');
+            content.querySelector('#NaatLyrics-story-close').addEventListener('click', closeStory);
+            content.querySelector('#NaatLyrics-story-like-btn').addEventListener('click', e => {
+                e.currentTarget.querySelector('#like-count').innerText = parseInt(e.currentTarget.querySelector('#like-count').innerText) + 1;
+            });
+
+            clearTimeout(storyTimeout);
+            if (isSeq) {
+                setTimeout(() => {
+                    const bar = content.querySelector('.active .NaatLyrics-story-progress-bar-inner');
+                    if (bar) bar.style.transition = 'width 5s linear';
+                }, 50);
+                storyTimeout = setTimeout(() => {
+                    currentStoryIndex++;
+                    if (currentStoryIndex >= featuredStoryList.length) closeStory();
+                    else showStory(featuredStoryList[currentStoryIndex], true);
+                }, 5000);
+            }
+        };
+
+        const closeStory = () => {
+            clearTimeout(storyTimeout);
+            storyViewer.classList.remove('active');
+        };
+
+        // Sorting, category, topic, writers renderers
+        const setupSorters = () => {
+            const alphaSorter = document.getElementById('NaatLyrics-alphabet-sorter'),
+                trendSorter = document.getElementById('NaatLyrics-trending-topics'),
+                tabs = document.querySelector('.NaatLyrics-sorter-tabs'),
+                panes = document.querySelectorAll('.NaatLyrics-tab-pane');
+
+            alphaSorter.innerHTML = ['Top', 'All', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+                .map(l => `<button class="NaatLyrics-alpha-button ${l === 'All' ? 'active' : ''}" data-letter="${l}">${l}</button>`).join('');
+
+            const topics = ["All", ...popularKeywords];
+            trendSorter.innerHTML = topics.map(t =>
+                `<button class="NaatLyrics-trending-topic" data-topic="${t}" style="background-image: ${(topicGradients[t] || topicGradients['Default'])}">
+            ${t} <span class="count">${t === 'All' ? kalamData.length : getCountForKeyword(t)}</span>
+        </button>`
+            ).join('');
+
+            tabs.addEventListener('click', e => {
+                const btn = e.target.closest('.NaatLyrics-tab-button');
+                if (!btn) return;
+                document.querySelector('.NaatLyrics-tab-button.active').classList.remove('active');
+                btn.classList.add('active');
+                panes.forEach(p => p.classList.remove('active'));
+                document.getElementById(`NaatLyrics-${btn.dataset.tab}-pane`).classList.add('active');
+            });
+
+            const filterList = (el, type, value) => {
+                document.querySelector('.NaatLyrics-alpha-button.active')?.classList.remove('active');
+                document.querySelector('.NaatLyrics-trending-topic.active')?.classList.remove('active');
+                el.classList.add('active');
+                let data;
+                if (type === 'letter') {
+                    if (value === 'All') data = kalamData;
+                    else if (value === 'Top') data = kalamData.filter(k => k.topKalam || true); // adjust logic for .topKalam
+                    else {
+                        const upperVal = value.toUpperCase();
+                        data = kalamData.filter(k => k.title.toUpperCase().startsWith(upperVal));
+                    }
+                } else {
+                    if (value === 'All') data = kalamData;
+                    else {
+                        const q = value.toLowerCase();
+                        data = kalamData.filter(k =>
+                            k.title.toLowerCase().includes(q) ||
+                            k.shayar.toLowerCase().includes(q) ||
+                            k.topic.toLowerCase().includes(q) ||
+                            k.book.toLowerCase().includes(q) ||
+                            k.category.toLowerCase().includes(q)
+                        );
+                    }
+                }
+                renderKalamList(data, document.getElementById('NaatLyrics-qalam-list'));
+            };
+
+            alphaSorter.addEventListener('click', e => {
+                const btn = e.target.closest('.NaatLyrics-alpha-button');
+                if (btn) filterList(btn, 'letter', btn.dataset.letter);
+            });
+            trendSorter.addEventListener('click', e => {
+                const btn = e.target.closest('.NaatLyrics-trending-topic');
+                if (btn) filterList(btn, 'topic', btn.dataset.topic);
+            });
+        };
+
+        const renderCategoryList = () => {
+            const container = document.getElementById('NaatLyrics-category-list');
+            const categories = [...new Set(kalamData.map(k => k.category))];
+            container.innerHTML = categories.map(cat =>
+                `<div class="NaatLyrics-list-item font-bold text-lg">${cat}</div>`).join('');
+        };
+
+        const renderTopicList = () => {
+            const container = document.getElementById('NaatLyrics-topic-list');
+
+            // Count kalams per topic
+            const topicCounts = kalamData.reduce((acc, k) => {
+                acc[k.topic] = (acc[k.topic] || 0) + 1;
+                return acc;
+            }, {});
+
+            // Get unique topics sorted by count (descending)
+            const topics = Object.keys(topicCounts).sort((a, b) => topicCounts[b] - topicCounts[a]);
+
+            container.innerHTML = topics.map(topic => `
+    <div class="NaatLyrics-list-item flex justify-between items-center" data-topic="${topic}">
+        <span class="font-bold text-lg">${topic}</span>
+        <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+            ${topicCounts[topic]} Kalams
+        </span>
+    </div>
+`).join('');
+
+            // Add click event listeners to each topic item
+            container.querySelectorAll('.NaatLyrics-list-item').forEach(item => {
+                item.addEventListener('click', async function () {
+                    const topic = this.dataset.topic;
+                    
+                    // Show loading state
+                    const majmuaContainer = document.getElementById('NaatLyrics-qalam-list');
+                    majmuaContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Loading kalams...</p>';
+                    
+                    // Switch to majmua page
+                    switchPage('majmua');
+                    
+                    try {
+                        // Get kalams for this specific topic
+                        const topicKalams = await getKalamsByTopic(topic);
+                        renderKalamList(topicKalams, majmuaContainer);
+                        
+                        if (topicKalams.length === 0) {
+                            majmuaContainer.innerHTML = `<p class="text-center text-gray-500 mt-4">No kalams found for topic "${topic}"</p>`;
+                        }
+                    } catch (error) {
+                        console.error('Error loading topic kalams:', error);
+                        majmuaContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Error loading kalams. Please try again.</p>';
+                    }
+                });
+            });
+        };
+        
+        const renderWriterList = () => {
+            const container = document.getElementById('NaatLyrics-writer-list');
+            // Group by writer
+            const writers = kalamData.reduce((acc, k) => {
+                if (!acc[k.shayar]) acc[k.shayar] = { books: new Set(), count: 0 };
+                acc[k.shayar].books.add(k.book);
+                acc[k.shayar].count++;
+                return acc;
+            }, {});
+            container.innerHTML = Object.entries(writers).map(([writer, data]) =>
+                `<div class="NaatLyrics-list-item flex justify-between items-center">
+            <div>
+                <h3 class="font-bold text-lg">✍️ ${writer}</h3>
+                <p class="text-sm text-gray-600 font-semibold mt-1">📚 ${[...data.books].join(', ')}</p>
+            </div>
+            <span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full">${data.count} Kalams</span>
+        </div>`
+            ).join('');
+        };
+
+        // Kalam Detail View
+        const showKalamDetailPage = (id) => {
+            // First try to find in current search results
+            let k = currentSearchResults.find(item => item.id === id);
+            
+            // If not found in search results, try main kalamData
+            if (!k) {
+                k = kalamData.find(item => item.id === id);
+            }
+            
+            if (!k) {
+                console.error('Kalam not found with ID:', id);
+                return;
+            }
+            
+            const saved = isKalamSaved(k.id);
+            const title = `"${k.title}" Lyrics - by ${k.shayar} | Naat Academy`;
+            const description = `Read the complete lyrics for "${k.title}" from the book ${k.book}, written by ${k.shayar}. Available on Naat Academy.`;
+            document.title = title;
+
+            // Set meta description for SEO
+            const descTag = document.querySelector('meta[name="description"]');
+            if (descTag) descTag.setAttribute('content', description);
+
+            document.getElementById('NaatLyrics-qalam-detail-content').innerHTML = `
+        <h2 class="text-3xl font-extrabold mb-4 text-center NaatLyrics-detail-title">${k.title}</h2>
+        <div class="flex justify-center items-center gap-4 mb-4 text-sm text-gray-500 font-semibold">
+            <span>${categoryEmojis[k.category] || '📜'} ${k.category}</span>
+            <span><i class="bi bi-person-fill"></i> ${k.shayar}</span>
+            <span><i class="bi bi-book-fill"></i> ${k.book}</span>
+        </div>
+        <div class="NaatLyrics-detail-actions">
+            <button class="NaatLyrics-action-btn font-urdu">اردو کلام</button>
+            <button id="NaatLyrics-save-kalam-btn" data-id="${k.id}" class="${saved ? 'saved' : ''}"><i class="bi ${saved ? 'bi-heart-fill' : 'bi-heart'}"></i> ${saved ? 'Saved' : 'Save'}</button>
+            <button id="NaatLyrics-share-kalam-btn" data-id="${k.id}"><i class="bi bi-share-fill"></i> Share</button>
+        </div>
+        <div class="NaatLyrics-qalam-pane">${k.lyrics.replace(/\n/g, '<br>')}</div>
+    `;
+            document.getElementById('NaatLyrics-save-kalam-btn').addEventListener('click', e => {
+                const btn = e.currentTarget, id = parseInt(btn.dataset.id);
+                if (isKalamSaved(id)) {
+                    unsaveKalam(id);
+                    btn.innerHTML = '<i class="bi bi-heart"></i> Save';
+                    btn.classList.remove('saved');
+                } else {
+                    saveKalam(id);
+                    btn.innerHTML = '<i class="bi bi-heart-fill"></i> Saved';
+                    btn.classList.add('saved');
+                }
+            });
+            document.getElementById('NaatLyrics-share-kalam-btn').addEventListener('click', e => {
+                const id = parseInt(e.currentTarget.dataset.id);
+                const kalam = kalamData.find(item => item.id === id) || currentSearchResults.find(item => item.id === id);
+                if (kalam) {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: `${kalam.title} - Naat Academy`,
+                            text: `Read the beautiful kalam "${kalam.title}" by ${kalam.shayar} on Naat Academy.\n\n${kalam.lyrics.substring(0, 100)}...`,
+                            url: window.location.href,
+                        });
+                    } else {
+                        const shareText = `${kalam.title} - by ${kalam.shayar}\n\n${kalam.lyrics}`;
+                        navigator.clipboard.writeText(shareText).then(() => {
+                            alert('Kalam copied to clipboard!');
+                        });
+                    }
+                }
+            });
+            switchPage('qalam-detail', true);
+        };
+
+        // Switch pages helper
+        const switchPage = (id, isDetail = false) => {
+            pages.forEach(p => p.classList.remove('active'));
+            document.getElementById(`NaatLyrics-page-${id}`)?.classList.add('active');
+            let title = "Naat Academy";
+            switch (id) {
+                case 'category': title = "Categories"; renderCategoryList(); break;
+                case 'topics': title = "Topics"; renderTopicList(); break;
+                case 'writers': title = "Writers"; renderWriterList(); break;
+                case 'saved': title = "Saved Kalams"; renderKalamList(kalamData.filter(k => isKalamSaved(k.id)), document.getElementById('NaatLyrics-saved-list')); break;
+            }
+            backButton.classList.toggle('hidden', !isDetail);
+            brandHeader.classList.toggle('hidden', isDetail);
+            if (!isDetail) {
+                pageHistory = [id];
+                document.querySelector('.NaatLyrics-bottom-nav-item.active')?.classList.remove('active');
+                document.querySelector(`.NaatLyrics-bottom-nav-item[data-page="${id}"]`)?.classList.add('active');
+            } else if (pageHistory[pageHistory.length - 1] !== id) {
+                pageHistory.push(id);
+            }
+        };
+
+        // Render search chips for popular keywords
+        const renderSearchChips = () => {
+            searchChipsContainer.innerHTML = popularKeywords.map(keyword =>
+                `<button class="NaatLyrics-search-chip" data-keyword="${keyword}">${keyword}</button>`).join('');
+        };
+
+        //--------------------------------------------------------
+        // Event Listeners & User Interactions
+        //--------------------------------------------------------
+        backButton.addEventListener('click', () => {
+            pageHistory.pop();
+            const prevPage = pageHistory[pageHistory.length - 1] || 'majmua';
+            switchPage(prevPage);
+        });
+
+        bottomNav.addEventListener('click', e => {
+            const item = e.target.closest('.NaatLyrics-bottom-nav-item');
+            if (item) switchPage(item.dataset.page);
+        });
+
+        mainContainer.addEventListener('click', e => {
+            const item = e.target.closest('.NaatLyrics-qalam-item');
+            if (item) {
+                e.preventDefault();
+                showKalamDetailPage(parseInt(item.dataset.id));
+            }
+        });
+
+        // Slider click for story
+        document.getElementById('NaatLyrics-slider-track').addEventListener('click', e => {
+            const card = e.target.closest('.NaatLyrics-slider-card');
+            if (card) {
+                currentStoryIndex = parseInt(card.dataset.index);
+                showStory(featuredStoryList[currentStoryIndex], true);
+            }
+        });
+
+        searchIconBtn.addEventListener('click', () => searchPopup.classList.add('active'));
+        searchCloseBtn.addEventListener('click', () => searchPopup.classList.remove('active'));
+        
+        // Enhanced search functionality
+        let searchTimeout;
+        searchInput.addEventListener('input', async (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
+            
+            // Show loading state
+            searchResultsContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Searching...</p>';
+            
+            // Set a timeout to prevent too many API calls
+            searchTimeout = setTimeout(async () => {
+                if (q.length < 2) {
+                    searchResultsContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Type at least 2 characters to search</p>';
+                    return;
+                }
+                
+                try {
+                    // Use API search for better results
+                    const results = await searchKalamsFromAPI(q);
+                    renderKalamList(results, searchResultsContainer, true);
+                    
+                    if (results.length === 0) {
+                        searchResultsContainer.innerHTML = `<p class="text-center text-gray-500 mt-4">No results found for "${q}"</p>`;
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                    searchResultsContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Search failed. Please try again.</p>';
+                }
+            }, 500); // 500ms debounce
+        });
+
+        // Search chip click handler
+        searchChipsContainer.addEventListener('click', async (e) => {
+            const chip = e.target.closest('.NaatLyrics-search-chip');
+            if (chip) {
+                const keyword = chip.dataset.keyword || chip.textContent;
+                searchInput.value = keyword;
+                
+                // Show loading state
+                searchResultsContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Searching...</p>';
+                
+                try {
+                    // Search for the keyword
+                    const results = await searchKalamsFromAPI(keyword);
+                    renderKalamList(results, searchResultsContainer, true);
+                    
+                    if (results.length === 0) {
+                        searchResultsContainer.innerHTML = `<p class="text-center text-gray-500 mt-4">No results found for "${keyword}"</p>`;
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                    searchResultsContainer.innerHTML = '<p class="text-center text-gray-500 mt-4">Search failed. Please try again.</p>';
+                }
+                
+                searchInput.focus();
+            }
+        });
+
+        // Add event listener for search result items
+        searchResultsContainer.addEventListener('click', e => {
+            const item = e.target.closest('.NaatLyrics-qalam-item');
+            if (item) {
+                e.preventDefault();
+                showKalamDetailPage(parseInt(item.dataset.id));
+                searchPopup.classList.remove('active');
+            }
+        });
+
+        //--------------------------------------------------------
+        // Initial App Load
+        //--------------------------------------------------------
+        async function init() {
+            kalamData = await fetchKalamData();
+            // If your API response does not have .topKalam, use logic to define top stories
+            // e.g. mark first 6 as topKalam for story slider
+            kalamData.sort((a, b) => a.title.localeCompare(b.title));
+            setupSlider();
+            setupSorters();
+            renderKalamList(kalamData, document.getElementById('NaatLyrics-qalam-list'));
+            renderSearchChips();
+            document.querySelector('.NaatLyrics-tab-button[data-tab="trending"]')?.click();
+            // Set "All" trending topic to be active on load
+            const allTrendingTopic = document.querySelector('.NaatLyrics-trending-topic[data-topic="All"]');
+            if (allTrendingTopic) allTrendingTopic.click();
+        }
+
+        init();
+    });
+</script>
 </body>
 
 </html>
