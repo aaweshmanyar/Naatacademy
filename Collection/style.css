@@ -1,0 +1,286 @@
+/* Custom Font for Urdu Text */
+@font-face {
+    font-family: 'NaatFont';
+    src: url('https://res.cloudinary.com/awescreative/raw/upload/v1749150996/Awes/naatfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Base Body Styles */
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fc;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+main {
+    flex-grow: 1;
+}
+
+/* Urdu Text Specific Styles */
+.urdu-text {
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    line-height: 1.9;
+    font-size: 1.2rem;
+}
+.urdu-text-sm { font-size: 1.0rem; }
+.urdu-text-xs { font-size: 0.9rem; }
+
+/* Enhanced List Item Card Styles */
+.kalam-item-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    border-right-width: 4px; /* Right border for RTL */
+}
+.kalam-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+/* Category border colors */
+.border-cat-nعت { border-right-color: #10b981; }
+.border-cat-سلام { border-right-color: #3b82f6; }
+.border-cat-منقبت { border-right-color: #f59e0b; }
+.border-cat-default { border-right-color: #6b7280; }
+
+/* Card Top Buttons Container */
+.card-top-buttons {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Copy Link & Roman Buttons */
+.copy-link-btn, .roman-link-btn {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+}
+.copy-link-btn {
+    width: 32px;
+    height: 32px;
+}
+.roman-link-btn {
+    height: 32px;
+    padding: 0 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.copy-link-btn:hover, .roman-link-btn:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+/* Enhanced Filter Tab Styles */
+.filter-tab {
+    padding: 0.4rem 1.25rem;
+    border-radius: 9999px;
+    color: #4b5563;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    background-color: #f3f4f6;
+}
+.filter-tab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    background-color: #e5e7eb;
+}
+.filter-tab.active {
+    box-shadow: 0 6px 15px var(--shadow-color);
+    transform: translateY(-2px);
+    border-color: transparent;
+    color: white;
+}
+
+/* Multi-color active tabs */
+.filter-tab[data-filter="top_kalam"].active {
+    background-image: linear-gradient(to right, #14b8a6, #22d3ee);
+    --shadow-color: rgba(20, 184, 166, 0.4);
+}
+.filter-tab[data-filter="popular"].active {
+    background-image: linear-gradient(to right, #fbbf24, #f59e0b);
+    --shadow-color: rgba(245, 158, 11, 0.3);
+}
+.filter-tab[data-filter="tahajji"].active {
+    background-image: linear-gradient(to right, #2dd4bf, #14b8a6);
+    --shadow-color: rgba(20, 184, 166, 0.3);
+}
+.filter-tab[data-filter="radif"].active {
+    background-image: linear-gradient(to right, #60a5fa, #3b82f6);
+    --shadow-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Topic Badge Colors with Very Light Backgrounds */
+.topic-badge-1 { background-color: #fef2f2; color: #dc2626; } /* Red */
+.topic-badge-2 { background-color: #eff6ff; color: #2563eb; } /* Blue */
+.topic-badge-3 { background-color: #fffbeb; color: #d97706; } /* Amber */
+.topic-badge-4 { background-color: #f0fdf4; color: #16a34a; } /* Green */
+.topic-badge-5 { background-color: #faf5ff; color: #9333ea; } /* Purple */
+.topic-badge-6 { background-color: #fdf2f8; color: #db2777; } /* Pink */
+
+/* Enhanced Alphabet Filter Styles */
+.alphabet-filter-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.alphabet-filter-container::-webkit-scrollbar { display: none; }
+
+.alphabet-button {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    border-radius: 9999px;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'NaatFont', 'Noto Nastaliq Urdu', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+.alphabet-button:hover {
+    background-color: #e5e7eb;
+    transform: scale(1.05);
+}
+.alphabet-button.active {
+    background-color: #0d9488;
+    color: white;
+    border-color: #0d9488;
+    font-weight: bold;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+}
+
+.footer-bg {
+     background-color: #1f2937;
+     color: #9ca3af;
+     flex-shrink: 0;
+}
+
+/* Mobile App-like Bottom Bar */
+.bottom-nav {
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+.bottom-nav-button.active {
+    color: #14b8a6;
+    transform: scale(1.1);
+}
+
+/* Enhanced Searchable Dropdown */
+.searchable-dropdown .dropdown-toggle { transition: all 0.2s ease-in-out; }
+.searchable-dropdown .dropdown-toggle:hover {
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+}
+.searchable-dropdown .dropdown-menu {
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+.searchable-dropdown .dropdown-item:hover, .searchable-dropdown .dropdown-item.active {
+    background-color: #f0fdfa;
+    color: #0d9488;
+}
+
+.whatsapp-fab {
+    position: fixed;
+    width: 55px;
+    height: 55px;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25D366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 28px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+.whatsapp-fab:hover { transform: scale(1.1); }
+@media (max-width: 767px) {
+    .whatsapp-fab {
+        bottom: 90px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+}
+
+/* Skeleton Loader */
+.skeleton-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.05);
+}
+.skeleton {
+    background-color: #e5e7eb;
+    border-radius: 0.25rem;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+    50% { opacity: .5; }
+}
+
+/* Toast Notification */
+#toast-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2d3748;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, bottom 0.3s;
+}
+#toast-notification.show {
+    opacity: 1;
+    visibility: visible;
+    bottom: 40px;
+}
